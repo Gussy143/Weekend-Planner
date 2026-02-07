@@ -1,0 +1,137 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ios-bg-grouped);
+  padding: var(--space-4);
+}
+
+.loginBox {
+  width: 100%;
+  max-width: 400px;
+  background: var(--ios-bg-secondary);
+  padding: var(--space-8);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-md);
+}
+
+.title {
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-bold);
+  text-align: center;
+  margin-bottom: var(--space-6);
+  color: var(--ios-label-primary);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.label {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--ios-label-primary);
+}
+
+.input {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--text-base);
+  color: var(--ios-label-primary);
+  background: var(--ios-bg-grouped);
+  border: 1px solid var(--ios-separator);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition-fast);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--ios-blue);
+}
+
+.input::placeholder {
+  color: var(--ios-label-tertiary);
+}
+
+.error {
+  padding: var(--space-3);
+  background: rgba(255, 59, 48, 0.1);
+  color: var(--ios-red);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  text-align: center;
+}
+
+.submitButton {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  background: var(--ios-blue);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.submitButton:hover {
+  opacity: 0.8;
+  transform: translateY(-1px);
+}
+
+.submitButton:active {
+  transform: translateY(0);
+}
+
+.backButton {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  background: transparent;
+  color: var(--ios-label-secondary);
+  border: 1px solid var(--ios-separator);
+  border-radius: var(--radius-md);
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.backButton:hover {
+  background: var(--ios-fill-tertiary);
+}
+
+.backButton:active {
+  background: var(--ios-fill-secondary);
+}
+
+.checkboxGroup {
+  display: flex;
+  align-items: center;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--ios-label-primary);
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: var(--ios-blue);
+}

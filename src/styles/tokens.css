@@ -49,7 +49,7 @@
   --space-10: 48px;
   
   /* === Typography Scale === */
-  --font-system: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
+  --font-system: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Pretendard', 'Noto Sans KR', 'Malgun Gothic', system-ui, sans-serif;
   
   /* Font Sizes */
   --text-xs: 11px;
@@ -100,27 +100,33 @@
   --hairline: 0.5px;
 }
 
-/* === Dark Mode === */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --ios-bg-primary: #000000;
-    --ios-bg-secondary: #1c1c1e;
-    --ios-bg-tertiary: #2c2c2e;
-    --ios-bg-grouped: #000000;
-    
-    --ios-label-primary: #ffffff;
-    --ios-label-secondary: #ebebf5;
-    --ios-label-tertiary: #ebebf5;
-    --ios-label-quaternary: #545458;
-    
-    --ios-separator: rgba(84, 84, 88, 0.6);
-    --ios-separator-opaque: #38383a;
-    
-    --ios-fill-primary: rgba(120, 120, 128, 0.36);
-    --ios-fill-secondary: rgba(120, 120, 128, 0.32);
-    --ios-fill-tertiary: rgba(118, 118, 128, 0.24);
-    
-    --glass-bg: rgba(28, 28, 30, 0.18);
-    --glass-border: rgba(255, 255, 255, 0.12);
-  }
+/* === Dark Mode (Apple HIG) === */
+[data-theme="dark"] {
+  --ios-bg-primary: #000000;
+  --ios-bg-secondary: #1c1c1e;
+  --ios-bg-tertiary: #2c2c2e;
+  --ios-bg-grouped: #000000;
+  
+  --ios-label-primary: rgba(255, 255, 255, 1);
+  --ios-label-secondary: rgba(235, 235, 245, 0.6);
+  --ios-label-tertiary: rgba(235, 235, 245, 0.3);
+  --ios-label-quaternary: rgba(235, 235, 245, 0.18);
+  
+  --ios-separator: rgba(84, 84, 88, 0.65);
+  --ios-separator-opaque: #38383a;
+  
+  --ios-blue: #0a84ff;
+  --ios-blue-tint: rgba(10, 132, 255, 0.15);
+  --ios-red: #ff453a;
+  --ios-green: #30d158;
+  
+  --ios-fill-primary: rgba(120, 120, 128, 0.36);
+  --ios-fill-secondary: rgba(120, 120, 128, 0.32);
+  --ios-fill-tertiary: rgba(118, 118, 128, 0.24);
+  
+  --glass-bg: rgba(28, 28, 30, 0.72);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 2px 10px rgba(0, 0, 0, 0.4);
 }
