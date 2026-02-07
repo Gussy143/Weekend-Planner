@@ -1,0 +1,71 @@
+/* iOS-style Buttons */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-system);
+  font-size: var(--text-md);
+  font-weight: var(--weight-semibold);
+  line-height: 1;
+  border: none;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  user-select: none;
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.button:active {
+  opacity: 0.7;
+  transform: scale(0.98);
+}
+
+.button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Primary Button (Blue) */
+.primary {
+  height: 50px;
+  padding: 0 var(--space-6);
+  background: var(--ios-blue);
+  color: white;
+}
+
+/* Secondary Button (Gray) */
+.secondary {
+  height: 50px;
+  padding: 0 var(--space-6);
+  background: var(--ios-fill-secondary);
+  color: var(--ios-label-primary);
+}
+
+/* Ghost Button (Transparent) */
+.ghost {
+  height: 44px;
+  padding: 0 var(--space-4);
+  background: transparent;
+  color: var(--ios-blue);
+}
+
+/* Destructive Button (Red) */
+.destructive {
+  height: 50px;
+  padding: 0 var(--space-6);
+  background: var(--ios-red);
+  color: white;
+}
+
+/* Full width */
+.fullWidth {
+  width: 100%;
+}
+
+/* Small variant */
+.small {
+  height: 40px;
+  padding: 0 var(--space-4);
+  font-size: var(--text-base);
+}

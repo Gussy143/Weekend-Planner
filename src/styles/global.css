@@ -1,0 +1,145 @@
+/* ============================================
+   Global Styles
+   iOS-style reset and base
+   ============================================ */
+
+@import './tokens.css';
+
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+/* Root */
+html {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-system);
+  font-size: var(--text-md);
+  line-height: var(--leading-normal);
+  color: var(--ios-label-primary);
+  background: var(--ios-bg-grouped);
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Typography Defaults */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
+}
+
+p {
+  margin: 0;
+}
+
+/* Remove default button styles */
+button {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+/* Input defaults */
+input,
+textarea,
+select {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+  border: none;
+  background: transparent;
+  outline: none;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--ios-label-tertiary);
+}
+
+/* Links */
+a {
+  color: var(--ios-blue);
+  text-decoration: none;
+}
+
+/* iOS-style scrollbar (WebKit) */
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+/* Disable pull-to-refresh on mobile */
+body {
+  overscroll-behavior-y: contain;
+}
+
+/* Safe area insets for notch devices */
+@supports (padding: env(safe-area-inset-top)) {
+  body {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* App container */
+#root {
+  min-height: 100vh;
+  background: var(--ios-bg-grouped);
+}
+
+/* Utility: Hide scrollbar but keep functionality */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Utility: Touch feedback */
+.active-opacity {
+  transition: opacity var(--transition-fast);
+}
+
+.active-opacity:active {
+  opacity: 0.4;
+}
+
+/* Utility: iOS-style focus ring */
+.focus-ring:focus-visible {
+  outline: 2px solid var(--ios-blue);
+  outline-offset: 2px;
+}

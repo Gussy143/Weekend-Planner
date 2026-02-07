@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="theme-color" content="#f2f2f7" />
+    <title>여행 플래너</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
+        <div class="status-bar"></div>
+        
+        <div class="hero-glass">
+            <div class="hero-content">
+                <h1 class="hero-title">여행</h1>
+                <p class="hero-subtitle">다가오는 여행</p>
+            </div>
+        </div>
+
+        <div class="content-wrapper">
+            <div class="list-section">
+                <div class="list-item" data-navigate="trip-detail">
+                    <div class="list-item-content">
+                        <div class="list-item-title">제주도 여름 여행</div>
+                        <div class="list-item-subtitle">2026년 8월 15일 – 18일 · 참가자 4명</div>
+                    </div>
+                    <div class="list-item-chevron">›</div>
+                </div>
+
+                <div class="list-item" data-navigate="trip-detail">
+                    <div class="list-item-content">
+                        <div class="list-item-title">부산 주말 여행</div>
+                        <div class="list-item-subtitle">2026년 7월 5일 – 7일 · 참가자 3명</div>
+                    </div>
+                    <div class="list-item-chevron">›</div>
+                </div>
+
+                <div class="list-item" data-navigate="trip-detail">
+                    <div class="list-item-content">
+                        <div class="list-item-title">강릉 겨울 바다</div>
+                        <div class="list-item-subtitle">2026년 12월 22일 – 24일 · 참가자 6명</div>
+                    </div>
+                    <div class="list-item-chevron">›</div>
+                </div>
+            </div>
+
+            <div class="list-section">
+                <div class="section-header">지난 여행</div>
+                <div class="list-item">
+                    <div class="list-item-content">
+                        <div class="list-item-title">서울 근교 캠핑</div>
+                        <div class="list-item-subtitle">2026년 5월 3일 – 4일</div>
+                    </div>
+                    <div class="list-item-chevron">›</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-bar">
+            <button class="primary-button" data-navigate="create-trip">새로운 여행 만들기</button>
+        </div>
+    </div>
+
+    <!-- Screen 2: Trip Detail -->
+    <div class="screen" id="screen-trip-detail">
+        <div class="status-bar"></div>
+        
+        <div class="nav-bar">
+            <button class="nav-back" data-navigate="home">‹ 여행</button>
+        </div>
+
+        <div class="hero-glass">
+            <div class="hero-content">
+                <h1 class="hero-title">제주도 여름 여행</h1>
+                <p class="hero-subtitle">2026년 8월 15일 – 18일</p>
+            </div>
+        </div>
+
+        <div class="content-wrapper">
+            <div class="list-section">
+                <div class="section-header">여행 정보</div>
+                <div class="list-item">
+                    <div class="list-item-content">
+                        <div class="list-item-label">참가자</div>
+                        <div class="list-item-value">4명</div>
+                    </div>
+                </div>
+                <div class="list-item">
+                    <div class="list-item-content">
+                        <div class="list-item-label">총 예산</div>
+                        <div class="list-item-value">₩1,200,000</div>
+                    </div>
+                </div>
+                <div class="list-item">
+                    <div class="list-item-content">
+                        <div class="list-item-label">숙소</div>
+                        <div class="list-item-value">제주 OO 호텔</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="list-section">
+                <div class="section-header">일정</div>
+                <div class="list-item" data-navigate="schedule">
+                    <div class="list-item-content">
+                        <div class="list-item-title">Day 1: 도착 및 중문</div>
+                        <div class="list-item-subtitle">공항 → 중문 해수욕장 → 저녁 식사</div>
+                    </div>
+                    <div class="list-item-chevron">›</div>
+                </div>
+                <div class="list-item" data-navigate="schedule">
+                    <div class="list-item-content">
+                        <div class="list-item-title">Day 2: 성산 일출봉</div>
+                        <div class="list-item-subtitle">일출 → 성산 일출봉 → 섭지코지</div>
+                    </div>
+                    <div class="list-item-chevron">›</div>
+                </div>
+                <div class="list-item" data-navigate="schedule">
+                    <div class="list-item-content">
+                        <div class="list-item-title">Day 3: 한라산 등반</div>
+                        <div class="list-item-subtitle">한라산 어리목 코스</div>
+                    </div>
+                    <div class="list-item-chevron">›</div>
+                </div>
+            </div>
+
+            <div class="list-section">
+                <div class="section-header">참가자</div>
+                <div class="list-item">
+                    <div class="list-item-content">
+                        <div class="list-item-title">김철수</div>
+                        <div class="list-item-subtitle">주최자</div>
+                    </div>
+                </div>
+                <div class="list-item">
+                    <div class="list-item-content">
+                        <div class="list-item-title">이영희</div>
+                        <div class="list-item-subtitle">참가자</div>
+                    </div>
+                </div>
+                <div class="list-item">
+                    <div class="list-item-content">
+                        <div class="list-item-title">박민수</div>
+                        <div class="list-item-subtitle">참가자</div>
+                    </div>
+                </div>
+                <div class="list-item">
+                    <div class="list-item-content">
+                        <div class="list-item-title">정수진</div>
+                        <div class="list-item-subtitle">참가자</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="list-section">
+                <div class="list-item action-item">
+                    <div class="list-item-content">
+                        <div class="list-item-title">여행 공유하기</div>
+                    </div>
+                    <div class="list-item-chevron">›</div>
+                </div>
+                <div class="list-item action-item">
+                    <div class="list-item-content">
+                        <div class="list-item-title">여행 설정</div>
+                    </div>
+                    <div class="list-item-chevron">›</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-spacer"></div>
+    </div>
+
+    <!-- Screen 3: Create Trip -->
+    <div class="screen" id="screen-create-trip">
+        <div class="status-bar"></div>
+        
+        <div class="nav-bar">
+            <button class="nav-back" data-navigate="home">취소</button>
+            <button class="nav-action">완료</button>
+        </div>
+
+        <div class="content-wrapper" style="padding-top: 44px;">
+            <div class="form-hero">
+                <h1 class="form-title">새로운 여행</h1>
+                <p class="form-subtitle">여행 정보를 입력하세요</p>
+            </div>
+
+            <div class="list-section">
+                <div class="input-item">
+                    <label class="input-label">여행 이름</label>
+                    <input type="text" class="input-field" placeholder="예: 제주도 여름 여행">
+                </div>
+            </div>
+
+            <div class="list-section">
+                <div class="section-header">기간</div>
+                <div class="input-item">
+                    <label class="input-label">시작일</label>
+                    <input type="date" class="input-field" value="2026-08-15">
+                </div>
+                <div class="input-item">
+                    <label class="input-label">종료일</label>
+                    <input type="date" class="input-field" value="2026-08-18">
+                </div>
+            </div>
+
+            <div class="list-section">
+                <div class="input-item">
+                    <label class="input-label">예산 (선택사항)</label>
+                    <input type="number" class="input-field" placeholder="1000000">
+                </div>
+            </div>
+
+            <div class="list-section">
+                <div class="list-item action-item">
+                    <div class="list-item-content">
+                        <div class="list-item-title">참가자 초대하기</div>
+                    </div>
+                    <div class="list-item-chevron">›</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-spacer"></div>
+    </div>
+
+    <!-- Screen 4: Join Trip -->
+    <div class="screen" id="screen-join-trip">
+        <div class="status-bar"></div>
+        
+        <div class="nav-bar">
+            <button class="nav-back" data-navigate="home">뒤로</button>
+        </div>
+
+        <div class="hero-glass centered">
+            <div class="hero-content">
+                <h1 class="hero-title centered">여행 참가</h1>
+                <p class="hero-subtitle centered">초대 코드를 입력하세요</p>
+            </div>
+        </div>
+
+        <div class="content-wrapper">
+            <div class="list-section">
+                <div class="input-item">
+                    <input type="text" class="input-field centered" placeholder="초대 코드 입력" style="text-align: center; font-size: 20px; letter-spacing: 2px;">
+                </div>
+            </div>
+
+            <div class="info-card">
+                <p class="info-text">초대 코드는 여행 주최자로부터 받을 수 있습니다. 코드를 입력하면 자동으로 여행에 참가됩니다.</p>
+            </div>
+        </div>
+
+        <div class="action-bar">
+            <button class="primary-button">참가하기</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
