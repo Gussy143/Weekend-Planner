@@ -17,7 +17,8 @@ const App: React.FC = () => {
   }, [theme]);
 
   return (
-    <BrowserRouter basename="/Weekend-Planner">
+    <BrowserRouter basename="/">
+
       <Routes>
         <Route path="/" element={<PublicView />} />
         <Route path="/admin/login" element={<AdminLogin />} />
