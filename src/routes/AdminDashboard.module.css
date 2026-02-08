@@ -4,13 +4,13 @@
 }
 
 .header {
-  background: var(--ios-blue);
+  background: #1f1f1f;
   padding: max(env(safe-area-inset-top), 1rem) 1.5rem 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   color: white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .header h1 {
@@ -29,9 +29,9 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(151, 194, 236, 0.25);
   color: white;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(151, 194, 236, 0.4);
   padding: 0.5rem 1rem;
   border-radius: 12px;
   font-size: 0.9rem;
@@ -42,7 +42,7 @@
 
 .homeBtn:hover,
 .logoutBtn:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(151, 194, 236, 0.4);
 }
 
 .main {
@@ -66,7 +66,11 @@
 }
 
 .activeEventCard {
-  background: linear-gradient(135deg, rgba(0, 122, 255, 0.1) 0%, rgba(175, 82, 222, 0.1) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(0, 122, 255, 0.1) 0%,
+    rgba(175, 82, 222, 0.1) 100%
+  );
   border: 2px solid var(--ios-blue);
   border-radius: 12px;
   padding: 1.25rem;
@@ -129,7 +133,11 @@
 
 .eventCard.active {
   border: 2px solid var(--ios-blue);
-  background: linear-gradient(135deg, rgba(0, 122, 255, 0.05) 0%, rgba(175, 82, 222, 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(0, 122, 255, 0.05) 0%,
+    rgba(175, 82, 222, 0.05) 100%
+  );
 }
 
 .eventInfo h3 {
@@ -148,6 +156,85 @@
 .eventActions {
   display: flex;
   align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.editBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(151, 194, 236, 0.15);
+  color: var(--ios-blue);
+  border: 1px solid rgba(151, 194, 236, 0.3);
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.editBtn:hover {
+  background: rgba(151, 194, 236, 0.3);
+}
+
+.eventItem {
+  background: var(--ios-bg-grouped);
+  border: 1px solid var(--ios-separator);
+  border-radius: 12px;
+  padding: 1.25rem;
+  transition: all 0.2s;
+}
+
+.eventItem:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.eventItem.active {
+  border: 2px solid var(--ios-blue);
+  background: linear-gradient(
+    135deg,
+    rgba(151, 194, 236, 0.1) 0%,
+    rgba(214, 208, 194, 0.1) 100%
+  );
+}
+
+.eventItem h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 0.25rem 0;
+  color: var(--ios-label-primary);
+}
+
+.eventItem p {
+  font-size: 0.85rem;
+  color: var(--ios-label-secondary);
+  margin: 0;
+}
+
+.selectBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: var(--ios-blue);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.selectBtn:hover:not(:disabled) {
+  opacity: 0.85;
+}
+
+.selectBtn:disabled {
+  background: var(--ios-green);
+  cursor: default;
 }
 
 .activateBtn {

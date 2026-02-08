@@ -1,70 +1,71 @@
 export interface ContentCard {
-  id: string;
-  icon: string;
-  title: string;
-  description: string;
+  id: string
+  icon: string
+  title: string
+  description: string
 }
 
 export interface ScheduleItem {
-  id: string;
-  order: number;
-  time: string;
-  duration: string; // "60분"
-  title: string;
-  subtitle?: string;
+  id: string
+  order: number
+  time: string
+  duration: string // "60분"
+  title: string
+  subtitle?: string
+  isHighlight?: boolean
 }
 
 export interface DaySchedule {
-  day: number;
-  date: string; // "2/27 (금)"
-  items: ScheduleItem[];
+  day: number
+  date: string // "2/27 (금)"
+  items: ScheduleItem[]
 }
 
 export interface TransportInfo {
-  type: string; // "첫째날 [금]", "돌째날 [토]"
+  type: string // "첫째날 [금]", "돌째날 [토]"
   routes: {
-    from: string;
-    to: string;
-    time: string;
-  }[];
+    from: string
+    to: string
+    time: string
+  }[]
 }
 
 export interface LocationInfo {
-  name: string;
-  address: string;
-  mapUrl?: string;
-  naverMapUrl?: string;
-  kakaoMapUrl?: string;
-  transport: TransportInfo[];
-  note?: string;
+  name: string
+  address: string
+  mapUrl?: string
+  naverMapUrl?: string
+  kakaoMapUrl?: string
+  transport: TransportInfo[]
+  note?: string
 }
 
 export interface Event {
-  id: string;
-  title: string;
-  subtitle?: string;
-  isActive: boolean; // 현재 표시할 이벤트인지
-  mainContent: ContentCard[];
-  schedules: DaySchedule[];
-  location: LocationInfo;
+  id: string
+  title: string
+  subtitle?: string
+  isActive: boolean // 현재 표시할 이벤트인지
+  mainContent: ContentCard[]
+  schedules: DaySchedule[]
+  location: LocationInfo
 }
 
 export interface EventStore {
-  events: Event[];
-  activeEventId: string | null;
-  
+  events: Event[]
+  activeEventId: string | null
+
   // Event actions
-  getActiveEvent: () => Event | undefined;
-  setActiveEvent: (eventId: string) => void;
-  createEvent: (event: Omit<Event, 'id'>) => string;
-  updateEvent: (id: string, event: Partial<Event>) => void;
-  deleteEvent: (id: string) => void;
-  
+  getActiveEvent: () => Event | undefined
+  setActiveEvent: (eventId: string) => void
+  createEvent: (event: Omit<Event, 'id'>) => string
+  updateEvent: (id: string, event: Partial<Event>) => void
+  deleteEvent: (id: string) => void
+
   // Admin
-  isAdmin: boolean;
-  login: (username: string, password: string) => boolean;
-  logout: () => void;
-  
+  isAdmin: boolean
+  login: (username: string, password: string) => boolean
+  logout: () => void
+
   // Seed demo data
-  seedDemoEvent: () => string;
+  seedDemoEvent: () => string
 }

@@ -1,11 +1,11 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import { EventStore, Event } from '../types/event';
+import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
+import { EventStore, Event } from '../types/event'
 
-const generateId = () => crypto.randomUUID();
+const generateId = () => crypto.randomUUID()
 
 // 스토어 버전 - 버전이 변경되면 localStorage 초기화
-const STORE_VERSION = 4;
+const STORE_VERSION = 4
 
 export const useEventStore = create<EventStore>()(
   persist(
@@ -16,53 +16,56 @@ export const useEventStore = create<EventStore>()(
 
       // Event actions
       getActiveEvent: () => {
-        const { events, activeEventId } = get();
-        return events.find((e) => e.id === activeEventId);
+        const { events, activeEventId } = get()
+        return events.find(e => e.id === activeEventId)
       },
 
-      setActiveEvent: (eventId) => {
-        set({ activeEventId: eventId });
+      setActiveEvent: eventId => {
+        set({ activeEventId: eventId })
       },
 
-      createEvent: (event) => {
-        const id = generateId();
-        const newEvent: Event = { ...event, id };
-        set((state) => ({
+      createEvent: event => {
+        const id = generateId()
+        const newEvent: Event = { ...event, id }
+        set(state => ({
           events: [...state.events, newEvent],
           activeEventId: id,
-        }));
-        return id;
+        }))
+        return id
       },
 
       updateEvent: (id, updates) => {
-        set((state) => ({
-          events: state.events.map((e) => (e.id === id ? { ...e, ...updates } : e)),
-        }));
+        set(state => ({
+          events: state.events.map(e =>
+            e.id === id ? { ...e, ...updates } : e
+          ),
+        }))
       },
 
-      deleteEvent: (id) => {
-        set((state) => ({
-          events: state.events.filter((e) => e.id !== id),
-          activeEventId: state.activeEventId === id ? null : state.activeEventId,
-        }));
+      deleteEvent: id => {
+        set(state => ({
+          events: state.events.filter(e => e.id !== id),
+          activeEventId:
+            state.activeEventId === id ? null : state.activeEventId,
+        }))
       },
 
       // Admin
       login: (username, password) => {
         if (username === 'admin' && password === 'admin12') {
-          set({ isAdmin: true });
-          return true;
+          set({ isAdmin: true })
+          return true
         }
-        return false;
+        return false
       },
 
       logout: () => {
-        set({ isAdmin: false });
+        set({ isAdmin: false })
       },
 
       // Seed demo data
       seedDemoEvent: () => {
-        const id = generateId();
+        const id = generateId()
         const demoEvent: Event = {
           id,
           title: '강릉 2박 3일 여행',
@@ -71,21 +74,24 @@ export const useEventStore = create<EventStore>()(
           mainContent: [
             {
               id: generateId(),
-              icon: '',
+              icon: 'LuWaves',
               title: '겨울 바다, 그 특별한 순간',
-              description: '차가운 바람과 푸른 파도가 만드는 겨울 동해의 감성을 온몸으로 느껴보세요',
+              description:
+                '차가운 바람과 푸른 파도가 만드는 겨울 동해의 감성을 온몸으로 느껴보세요',
             },
             {
               id: generateId(),
-              icon: '',
+              icon: 'LuUtensilsCrossed',
               title: '강릉의 맛, 미식 로드트립',
-              description: '초당순두부, 활어회, 강릉 커피까지 — 입이 즐거운 미식 여정',
+              description:
+                '초당순두부, 활어회, 강릉 커피까지 — 입이 즐거운 미식 여정',
             },
             {
               id: generateId(),
-              icon: '',
+              icon: 'LuCamera',
               title: '프레임 속 추억 한 컷',
-              description: '경포대, 안목해변, 정동진에서 남기는 인생샷 스팟 투어',
+              description:
+                '경포대, 안목해변, 정동진에서 남기는 인생샷 스팟 투어',
             },
           ],
           schedules: [
@@ -261,7 +267,11 @@ export const useEventStore = create<EventStore>()(
               {
                 type: 'KTX',
                 routes: [
-                  { from: '서울역', to: '강릉역', time: '약 2시간 (최단 112분)' },
+                  {
+                    from: '서울역',
+                    to: '강릉역',
+                    time: '약 2시간 (최단 112분)',
+                  },
                 ],
               },
               {
@@ -273,20 +283,24 @@ export const useEventStore = create<EventStore>()(
               {
                 type: '펜션 이동',
                 routes: [
-                  { from: '강릉역', to: '위스테이독채펜션', time: '차량 12km (약 20분) / 택시 15,000원' },
+                  {
+                    from: '강릉역',
+                    to: '위스테이독채펜션',
+                    time: '차량 12km (약 20분)',
+                  },
                 ],
               },
             ],
             note: '* KTX는 사전 예약 필수 / 주말은 예매가 빠르니 미리 구매하세요',
           },
-        };
+        }
 
-        set((state) => ({
+        set(state => ({
           events: [...state.events, demoEvent],
           activeEventId: id,
-        }));
+        }))
 
-        return id;
+        return id
       },
     }),
     {
@@ -300,10 +314,10 @@ export const useEventStore = create<EventStore>()(
             events: [],
             activeEventId: null,
             isAdmin: false,
-          };
+          }
         }
-        return persistedState;
+        return persistedState
       },
     }
   )
-);
+)

@@ -1,41 +1,54 @@
 /* ============================================
-   iOS Design Tokens
-   Apple Human Interface Guidelines
+   Design Tokens — Tone-on-Tone Palette
+   #97C2EC · #D6D0C2 · #1F1F1F · #FFFFFF
+   + iOS Liquid Glass Design
    ============================================ */
 
 :root {
-  /* === iOS Color System === */
-  --ios-bg-primary: #f2f2f7;
+  /* === Brand Colors === */
+  --brand-blue: #97c2ec;
+  --brand-blue-deep: #6fa8de;
+  --brand-blue-light: #c3defa;
+  --brand-blue-muted: rgba(151, 194, 236, 0.18);
+  --brand-warm: #d6d0c2;
+  --brand-warm-light: #e8e4da;
+  --brand-warm-deep: #b8b0a0;
+
+  /* === Light Mode (default) === */
+  --ios-bg-primary: #f5f3ef;
   --ios-bg-secondary: #ffffff;
-  --ios-bg-tertiary: #ffffff;
-  --ios-bg-grouped: #f2f2f7;
-  
+  --ios-bg-tertiary: #faf9f7;
+  --ios-bg-grouped: #f0ede8;
+
   /* Labels */
-  --ios-label-primary: #000000;
-  --ios-label-secondary: #3c3c43;
+  --ios-label-primary: #1f1f1f;
+  --ios-label-secondary: #4a4a4a;
   --ios-label-tertiary: #8e8e93;
-  --ios-label-quaternary: #c7c7cc;
-  
+  --ios-label-quaternary: #bcbcbc;
+
   /* Separators */
-  --ios-separator: rgba(60, 60, 67, 0.18);
-  --ios-separator-opaque: #c6c6c8;
-  
+  --ios-separator: rgba(31, 31, 31, 0.1);
+  --ios-separator-opaque: #d6d0c2;
+
   /* System Colors */
-  --ios-blue: #007aff;
-  --ios-blue-tint: rgba(0, 122, 255, 0.1);
-  --ios-red: #ff3b30;
-  --ios-green: #34c759;
-  
-  /* Fill Colors (for buttons, etc) */
-  --ios-fill-primary: rgba(120, 120, 128, 0.2);
-  --ios-fill-secondary: rgba(120, 120, 128, 0.16);
-  --ios-fill-tertiary: rgba(118, 118, 128, 0.12);
-  
-  /* Glass Effect */
-  --glass-bg: rgba(255, 255, 255, 0.15);
-  --glass-border: rgba(255, 255, 255, 0.25);
-  --glass-blur: blur(28px);
-  
+  --ios-blue: #6fa8de;
+  --ios-blue-tint: rgba(151, 194, 236, 0.15);
+  --ios-red: #e07066;
+  --ios-green: #7bbf8a;
+
+  /* Fill Colors */
+  --ios-fill-primary: rgba(151, 194, 236, 0.18);
+  --ios-fill-secondary: rgba(214, 208, 194, 0.35);
+  --ios-fill-tertiary: rgba(214, 208, 194, 0.2);
+
+  /* === Liquid Glass === */
+  --glass-bg: rgba(255, 255, 255, 0.55);
+  --glass-bg-heavy: rgba(255, 255, 255, 0.72);
+  --glass-border: rgba(255, 255, 255, 0.45);
+  --glass-blur: blur(28px) saturate(180%);
+  --glass-shadow:
+    0 2px 16px rgba(31, 31, 31, 0.06), 0 0 1px rgba(31, 31, 31, 0.08);
+
   /* === Spacing Scale === */
   --space-1: 4px;
   --space-2: 8px;
@@ -47,11 +60,12 @@
   --space-8: 32px;
   --space-9: 40px;
   --space-10: 48px;
-  
-  /* === Typography Scale === */
-  --font-system: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Pretendard', 'Noto Sans KR', 'Malgun Gothic', system-ui, sans-serif;
-  
-  /* Font Sizes */
+
+  /* === Typography === */
+  --font-system:
+    -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Pretendard',
+    'Noto Sans KR', 'Malgun Gothic', system-ui, sans-serif;
+
   --text-xs: 11px;
   --text-sm: 13px;
   --text-base: 15px;
@@ -60,19 +74,17 @@
   --text-xl: 22px;
   --text-2xl: 28px;
   --text-3xl: 34px;
-  
-  /* Font Weights */
+
   --weight-regular: 400;
   --weight-medium: 500;
   --weight-semibold: 600;
   --weight-bold: 700;
-  
-  /* Line Heights */
+
   --leading-tight: 1.2;
   --leading-snug: 1.33;
   --leading-normal: 1.47;
   --leading-relaxed: 1.52;
-  
+
   /* === Border Radius === */
   --radius-sm: 8px;
   --radius-md: 10px;
@@ -80,53 +92,56 @@
   --radius-xl: 16px;
   --radius-2xl: 20px;
   --radius-full: 9999px;
-  
-  /* === Shadows (minimal) === */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
-  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.08);
-  
+
+  /* === Shadows (soft) === */
+  --shadow-sm: 0 1px 3px rgba(31, 31, 31, 0.04);
+  --shadow-md: 0 4px 12px rgba(31, 31, 31, 0.06);
+  --shadow-lg: 0 8px 24px rgba(31, 31, 31, 0.08);
+
   /* === Animation === */
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
-  
+
   /* === Layout === */
   --container-mobile: 100%;
   --container-max: 428px;
   --nav-height: 44px;
   --status-bar-height: 44px;
-  
-  /* === Hairline === */
   --hairline: 0.5px;
 }
 
-/* === Dark Mode (Apple HIG) === */
-[data-theme="dark"] {
-  --ios-bg-primary: #000000;
-  --ios-bg-secondary: #1c1c1e;
-  --ios-bg-tertiary: #2c2c2e;
-  --ios-bg-grouped: #000000;
-  
-  --ios-label-primary: rgba(255, 255, 255, 1);
-  --ios-label-secondary: rgba(235, 235, 245, 0.6);
-  --ios-label-tertiary: rgba(235, 235, 245, 0.3);
-  --ios-label-quaternary: rgba(235, 235, 245, 0.18);
-  
-  --ios-separator: rgba(84, 84, 88, 0.65);
-  --ios-separator-opaque: #38383a;
-  
-  --ios-blue: #0a84ff;
-  --ios-blue-tint: rgba(10, 132, 255, 0.15);
-  --ios-red: #ff453a;
-  --ios-green: #30d158;
-  
-  --ios-fill-primary: rgba(120, 120, 128, 0.36);
-  --ios-fill-secondary: rgba(120, 120, 128, 0.32);
-  --ios-fill-tertiary: rgba(118, 118, 128, 0.24);
-  
-  --glass-bg: rgba(28, 28, 30, 0.72);
+/* === Dark Mode === */
+[data-theme='dark'] {
+  --ios-bg-primary: #1f1f1f;
+  --ios-bg-secondary: #2a2a2a;
+  --ios-bg-tertiary: #333333;
+  --ios-bg-grouped: #1a1a1a;
+
+  --ios-label-primary: #f0ede8;
+  --ios-label-secondary: rgba(240, 237, 232, 0.65);
+  --ios-label-tertiary: rgba(240, 237, 232, 0.35);
+  --ios-label-quaternary: rgba(240, 237, 232, 0.18);
+
+  --ios-separator: rgba(214, 208, 194, 0.12);
+  --ios-separator-opaque: #3d3d3d;
+
+  --ios-blue: #97c2ec;
+  --ios-blue-tint: rgba(151, 194, 236, 0.18);
+  --ios-red: #f08880;
+  --ios-green: #8fd49e;
+
+  --ios-fill-primary: rgba(151, 194, 236, 0.2);
+  --ios-fill-secondary: rgba(214, 208, 194, 0.15);
+  --ios-fill-tertiary: rgba(214, 208, 194, 0.08);
+
+  --glass-bg: rgba(42, 42, 42, 0.65);
+  --glass-bg-heavy: rgba(42, 42, 42, 0.82);
   --glass-border: rgba(255, 255, 255, 0.08);
-  
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 2px 10px rgba(0, 0, 0, 0.4);
+  --glass-shadow:
+    0 2px 16px rgba(0, 0, 0, 0.2), 0 0 1px rgba(255, 255, 255, 0.05);
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.35);
 }

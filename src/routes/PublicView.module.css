@@ -9,13 +9,14 @@
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(0, 122, 255, 0.65);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-  color: white;
+  background: var(--glass-bg-heavy);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  color: var(--ios-label-primary);
   padding: var(--space-5) var(--space-4) var(--space-4);
   text-align: center;
-  border-bottom: var(--hairline) solid rgba(255, 255, 255, 0.15);
+  border-bottom: var(--hairline) solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
 }
 
 .title {
@@ -24,13 +25,15 @@
   margin-bottom: 2px;
   line-height: var(--leading-tight);
   letter-spacing: -0.4px;
+  color: var(--ios-label-primary);
 }
 
 .subtitle {
   font-size: var(--text-sm);
-  opacity: 0.85;
+  opacity: 0.7;
   line-height: var(--leading-snug);
   font-weight: var(--weight-regular);
+  color: var(--ios-label-secondary);
 }
 
 /* Section - Compact */
@@ -60,9 +63,12 @@
   display: flex;
   gap: var(--space-3);
   padding: var(--space-4);
-  background: var(--ios-bg-secondary);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
+  background: var(--glass-bg-heavy);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-radius: var(--radius-xl);
+  border: var(--hairline) solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
 }
 
 .cardIcon {
@@ -159,10 +165,13 @@
 }
 
 .carouselSlide > div {
-  background: var(--ios-bg-secondary);
+  background: var(--glass-bg-heavy);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   border-radius: var(--radius-2xl);
   padding: var(--space-5);
-  box-shadow: var(--shadow-md);
+  border: var(--hairline) solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
   overflow: visible;
   position: relative;
 }
@@ -198,7 +207,7 @@
 .timelineItem {
   position: relative;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 0;
   padding: var(--space-2) 0;
 }
@@ -223,22 +232,114 @@
   z-index: 2;
 }
 
-/* 라인: 각 아이템의 도트 하단 → 아이템 하단까지 */
+/* 하이라이트 도트: 흐르는 그라데이션 테두리 */
+.timelineDotHighlight {
+  composes: timelineDot;
+  width: 26px;
+  height: 26px;
+  margin-left: 8px;
+  border: 2.5px solid transparent;
+  background-image:
+    linear-gradient(var(--ios-bg-secondary), var(--ios-bg-secondary)),
+    linear-gradient(135deg, #97c2ec, #667eea, #764ba2, #f093fb, #97c2ec);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  background-size:
+    100% 100%,
+    300% 300%;
+  animation: gradientFlow 3s ease infinite;
+  font-size: 11px;
+  font-weight: 800;
+  color: #667eea;
+}
+
+@keyframes gradientFlow {
+  0% {
+    background-position:
+      0 0,
+      0% 50%;
+  }
+  50% {
+    background-position:
+      0 0,
+      100% 50%;
+  }
+  100% {
+    background-position:
+      0 0,
+      0% 50%;
+  }
+}
+
+/* 토스트 팝업 */
+.toast {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ios-label-primary);
+  color: var(--ios-bg-primary);
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  z-index: 9999;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  animation:
+    toastIn 0.3s ease,
+    toastOut 0.3s ease 0.7s forwards;
+  pointer-events: none;
+}
+
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@keyframes toastOut {
+  from {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px);
+  }
+}
+
+/* 라인: 도트 중앙을 관통 */
 .timelineItem::before {
   content: '';
   position: absolute;
-  left: 20px; /* margin-left(10) + dot절반(11) - line절반(1) */
-  top: calc(var(--space-2) + 24px); /* padding-top + dot-top-margin(2) + dot(22) */
-  bottom: 0;
+  left: 20px;
   width: 2px;
   background: var(--ios-blue);
   opacity: 0.2;
   z-index: 0;
 }
 
-/* 마지막 아이템: 라인 없음 */
+/* 첫 번째 아이템: 도트 하단부터 아래로 */
+.timelineItem:first-child::before {
+  top: calc(var(--space-2) + 24px);
+  bottom: 0;
+}
+
+/* 중간 아이템: 전체 높이 */
+.timelineItem:not(:first-child):not(:last-child)::before {
+  top: 0;
+  bottom: 0;
+}
+
+/* 마지막 아이템: 위에서 도트 상단까지 */
 .timelineItem:last-child::before {
-  display: none;
+  top: 0;
+  bottom: calc(var(--space-2) + 22px);
 }
 
 /* 콘텐츠 (도트 오른쪽) */
@@ -279,16 +380,20 @@
 
 /* Location - Compact */
 .locationCard {
-  background: var(--ios-bg-secondary);
+  background: var(--glass-bg-heavy);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   padding: var(--space-4);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
+  border-radius: var(--radius-xl);
+  border: var(--hairline) solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
 }
 
 .locationHeader {
   display: flex;
   gap: var(--space-3);
   margin-bottom: var(--space-4);
+  align-items: flex-start;
 }
 
 .locationIcon {
@@ -365,10 +470,10 @@
   margin: var(--space-4) 0;
   border-radius: var(--radius-xl);
   overflow: hidden;
-  box-shadow: 
+  box-shadow:
     0 4px 12px rgba(0, 0, 0, 0.08),
     0 1px 3px rgba(0, 0, 0, 0.06);
-  height: 280px;
+  height: 240px;
   background: var(--ios-fill-tertiary);
 }
 
@@ -388,7 +493,7 @@
   background: var(--ios-blue);
   color: white;
   text-align: center;
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-xl);
   font-weight: var(--weight-semibold);
   font-size: var(--text-sm);
   transition: all var(--transition-fast);
@@ -428,10 +533,15 @@
 }
 
 .transportType {
-  font-size: var(--text-base);
+  font-size: var(--text-sm);
   font-weight: var(--weight-semibold);
-  margin-bottom: var(--space-2);
   color: var(--ios-label-primary);
+  margin-right: var(--space-2);
+}
+
+.transportDivider {
+  color: var(--ios-separator);
+  margin-right: var(--space-2);
 }
 
 .transportList {
@@ -442,7 +552,7 @@
 
 .transportItem {
   display: flex;
-  justify-content: space-between;
+  align-items: flex-start;
   padding: var(--space-2) 0;
   font-size: var(--text-sm);
   color: var(--ios-label-secondary);
@@ -455,6 +565,7 @@
 .transportTime {
   color: var(--ios-blue);
   font-weight: var(--weight-medium);
+  margin-left: var(--space-2);
 }
 
 .transportNote {
@@ -471,14 +582,15 @@
   right: var(--space-4);
   width: 50px;
   height: 50px;
-  background: var(--ios-bg-secondary);
-  backdrop-filter: blur(12px);
+  background: var(--glass-bg-heavy);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   color: var(--ios-blue);
-  border: var(--hairline) solid var(--ios-separator);
+  border: var(--hairline) solid var(--glass-border);
   border-radius: 50%;
   font-size: 22px;
   cursor: pointer;
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--glass-shadow);
   transition: all var(--transition-fast);
   z-index: 100;
   display: flex;
@@ -495,9 +607,12 @@
   position: fixed;
   bottom: 80px;
   right: var(--space-4);
-  background: var(--ios-bg-secondary);
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  background: var(--glass-bg-heavy);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-radius: var(--radius-xl);
+  border: var(--hairline) solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
   overflow: hidden;
   z-index: 99;
   animation: slideUp 0.2s ease-out;
@@ -519,7 +634,7 @@
   align-items: center;
   gap: var(--space-3);
   padding: var(--space-4) var(--space-6);
-  background: var(--ios-bg-secondary);
+  background: transparent;
   color: var(--ios-label-primary);
   border: none;
   width: 100%;
@@ -528,7 +643,7 @@
   font-weight: var(--weight-medium);
   cursor: pointer;
   transition: background var(--transition-fast);
-  border-bottom: 1px solid var(--ios-separator);
+  border-bottom: var(--hairline) solid var(--ios-separator);
 }
 
 .menuItem:last-child {

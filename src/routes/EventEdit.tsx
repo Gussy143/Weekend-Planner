@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import { IoMdArrowBack, IoMdAdd, IoMdTrash } from 'react-icons/io'
 import { IoLocationSharp } from 'react-icons/io5'
 import { MdSave, MdDirectionsBus } from 'react-icons/md'
@@ -16,9 +16,13 @@ import styles from './EventCreate.module.css'
 
 const generateId = () => crypto.randomUUID()
 
-export const EventCreate: React.FC = () => {
+export const EventEdit: React.FC = () => {
   const navigate = useNavigate()
-  const { createEvent, isAdmin } = useEventStore()
+  const { id: eventId } = useParams<{ id: string }>()
+  const { isAdmin } = useEventStore()
+
+  const [isLoading, setIsLoading] = useState(true)
+  const [isSaving, setIsSaving] = useState(false)
 
   // 권한 확인
   React.useEffect(() => {
@@ -30,16 +34,13 @@ export const EventCreate: React.FC = () => {
   // 기본 상태
   const [title, setTitle] = useState('')
   const [subtitle, setSubtitle] = useState('')
+  const [isActive, setIsActive] = useState(false)
 
   // 메인 콘텐츠
-  const [mainContent, setMainContent] = useState<ContentCard[]>([
-    { id: generateId(), icon: '', title: '', description: '' },
-  ])
+  const [mainContent, setMainContent] = useState<ContentCard[]>([])
 
   // 일정
-  const [schedules, setSchedules] = useState<DaySchedule[]>([
-    { day: 1, date: '', items: [] },
-  ])
+  const [schedules, setSchedules] = useState<DaySchedule[]>([])
 
   // 위치 정보
   const [locationName, setLocationName] = useState('')
@@ -54,9 +55,74 @@ export const EventCreate: React.FC = () => {
       type: string
       routes: Array<{ from: string; to: string; time: string }>
     }>
-  >([{ type: '', routes: [{ from: '', to: '', time: '' }] }])
+  >([])
 
-  // 메인 콘텐츠 추가
+  // 기존 이벤트 데이터 로드
+  useEffect(() => {
+    const loadEvent = async () => {
+      if (!eventId) return
+
+      try {
+        // DB에서 전체 이벤트 데이터 로드 (활성 이벤트와 무관하게)
+        const event = await EventService.getEventById(eventId)
+
+        if (!event) {
+          alert('이벤트를 찾을 수 없습니다.')
+          navigate('/admin/dashboard')
+          return
+        }
+
+        // 폼에 데이터 채우기
+        setTitle(event.title)
+        setSubtitle(event.subtitle || '')
+        setIsActive(event.isActive)
+
+        if (event.mainContent && event.mainContent.length > 0) {
+          setMainContent(event.mainContent)
+        } else {
+          setMainContent([
+            { id: generateId(), icon: '', title: '', description: '' },
+          ])
+        }
+
+        if (event.schedules && event.schedules.length > 0) {
+          setSchedules(event.schedules)
+        } else {
+          setSchedules([{ day: 1, date: '', items: [] }])
+        }
+
+        if (event.location) {
+          setLocationName(event.location.name || '')
+          setLocationAddress(event.location.address || '')
+          setNaverMapUrl(event.location.naverMapUrl || '')
+          setKakaoMapUrl(event.location.kakaoMapUrl || '')
+          setLocationNote(event.location.note || '')
+
+          if (event.location.transport && event.location.transport.length > 0) {
+            setTransportTypes(event.location.transport)
+          } else {
+            setTransportTypes([
+              { type: '', routes: [{ from: '', to: '', time: '' }] },
+            ])
+          }
+        } else {
+          setTransportTypes([
+            { type: '', routes: [{ from: '', to: '', time: '' }] },
+          ])
+        }
+      } catch (error) {
+        console.error('이벤트 로드 실패:', error)
+        alert('이벤트 로드에 실패했습니다.')
+        navigate('/admin/dashboard')
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    loadEvent()
+  }, [eventId, navigate])
+
+  // 메인 콘텐츠 관리
   const addMainContent = () => {
     setMainContent([
       ...mainContent,
@@ -78,7 +144,7 @@ export const EventCreate: React.FC = () => {
     )
   }
 
-  // 일정 추가
+  // 일정 관리
   const addDay = () => {
     setSchedules([
       ...schedules,
@@ -87,7 +153,9 @@ export const EventCreate: React.FC = () => {
   }
 
   const removeDay = (day: number) => {
-    setSchedules(schedules.filter(s => s.day !== day))
+    setSchedules(
+      schedules.filter(s => s.day !== day).map((s, i) => ({ ...s, day: i + 1 }))
+    )
   }
 
   const updateDayDate = (day: number, date: string) => {
@@ -122,7 +190,12 @@ export const EventCreate: React.FC = () => {
     setSchedules(
       schedules.map(s =>
         s.day === day
-          ? { ...s, items: s.items.filter(i => i.id !== itemId) }
+          ? {
+              ...s,
+              items: s.items
+                .filter(i => i.id !== itemId)
+                .map((i, idx) => ({ ...i, order: idx + 1 })),
+            }
           : s
       )
     )
@@ -148,7 +221,7 @@ export const EventCreate: React.FC = () => {
     )
   }
 
-  // 교통편 추가
+  // 교통편 관리
   const addTransportType = () => {
     setTransportTypes([
       ...transportTypes,
@@ -213,59 +286,87 @@ export const EventCreate: React.FC = () => {
       return
     }
 
-    const newEvent: Event = {
-      id: generateId(),
-      title,
-      subtitle: subtitle || undefined,
-      isActive: false,
-      mainContent: mainContent.filter(
-        c => c.title.trim() && c.description.trim()
-      ),
-      schedules: schedules
-        .filter(s => s.date.trim() && s.items.length > 0)
-        .map(s => ({
-          ...s,
-          items: s.items.filter(i => i.title.trim() && i.time.trim()),
-        })),
-      location: {
-        name: locationName,
-        address: locationAddress,
-        naverMapUrl: naverMapUrl || undefined,
-        kakaoMapUrl: kakaoMapUrl || undefined,
-        transport: transportTypes
-          .filter(
-            t =>
-              t.type.trim() && t.routes.some(r => r.from.trim() && r.to.trim())
-          )
-          .map(t => ({
-            type: t.type,
-            routes: t.routes.filter(r => r.from.trim() && r.to.trim()),
-          })),
-        note: locationNote || undefined,
-      },
-    }
+    setIsSaving(true)
 
     try {
-      const savedId = await EventService.saveFullEvent(newEvent)
+      const updatedEvent: Event = {
+        id: eventId!,
+        title,
+        subtitle: subtitle || undefined,
+        isActive,
+        mainContent: mainContent.filter(
+          c => c.title.trim() || c.description.trim()
+        ),
+        schedules: schedules
+          .filter(s => s.date.trim())
+          .map(s => ({
+            ...s,
+            items: s.items.filter(i => i.title.trim() || i.time.trim()),
+          })),
+        location: {
+          name: locationName,
+          address: locationAddress,
+          naverMapUrl: naverMapUrl || undefined,
+          kakaoMapUrl: kakaoMapUrl || undefined,
+          transport: transportTypes
+            .filter(
+              t =>
+                t.type.trim() &&
+                t.routes.some(r => r.from.trim() || r.to.trim())
+            )
+            .map(t => ({
+              type: t.type,
+              routes: t.routes.filter(r => r.from.trim() || r.to.trim()),
+            })),
+          note: locationNote || undefined,
+        },
+      }
+
+      const savedId = await EventService.saveFullEvent(updatedEvent)
       if (savedId) {
-        // 로컬 스토어에도 저장
-        createEvent(newEvent)
-        alert('이벤트가 생성되었습니다!')
+        alert('이벤트가 저장되었습니다!')
         navigate('/admin/dashboard')
       } else {
         alert('이벤트 저장에 실패했습니다.')
       }
     } catch (error) {
       console.error('저장 실패:', error)
-      // 로컬 스토리지에 폴백 저장
-      const id = createEvent(newEvent)
-      if (id) {
-        alert('이벤트가 생성되었습니다! (로컬 저장)')
-        navigate('/admin/dashboard')
-      } else {
-        alert('이벤트 생성에 실패했습니다.')
-      }
+      alert('이벤트 저장에 실패했습니다.')
+    } finally {
+      setIsSaving(false)
     }
+  }
+
+  if (isLoading) {
+    return (
+      <div className={styles.container}>
+        <header className={styles.header}>
+          <button
+            onClick={() => navigate('/admin/dashboard')}
+            className={styles.backBtn}
+          >
+            <IoMdArrowBack size={24} />
+            <span>돌아가기</span>
+          </button>
+          <h1>이벤트 편집</h1>
+          <div style={{ width: 100 }} />
+        </header>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: '4rem',
+          }}
+        >
+          <p
+            style={{ color: 'var(--ios-label-secondary)', fontSize: '1.1rem' }}
+          >
+            데이터 로딩 중...
+          </p>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -279,10 +380,14 @@ export const EventCreate: React.FC = () => {
           <IoMdArrowBack size={24} />
           <span>돌아가기</span>
         </button>
-        <h1>이벤트 만들기</h1>
-        <button onClick={handleSave} className={styles.saveBtn}>
+        <h1>이벤트 편집</h1>
+        <button
+          onClick={handleSave}
+          className={styles.saveBtn}
+          disabled={isSaving}
+        >
           <MdSave size={24} />
-          <span>저장</span>
+          <span>{isSaving ? '저장 중...' : '저장'}</span>
         </button>
       </header>
 
