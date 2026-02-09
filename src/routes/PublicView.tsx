@@ -43,7 +43,8 @@ export const PublicView: React.FC = () => {
   useEffect(() => {
     const w = window as any
     if (w.Kakao && !w.Kakao.isInitialized()) {
-      w.Kakao.init(import.meta.env.VITE_KAKAO_MAP_APP_KEY)
+      const appKey = (import.meta.env.VITE_KAKAO_MAP_APP_KEY || '').trim()
+      if (appKey) w.Kakao.init(appKey)
     }
   }, [])
 
