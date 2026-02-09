@@ -4,7 +4,6 @@ import {
   IoSettingsSharp,
   IoLocationSharp,
   IoCopyOutline,
-  IoChevronBack,
   IoChevronForward,
   IoShareSocial,
 } from 'react-icons/io5'
@@ -26,11 +25,7 @@ import styles from './PublicView.module.css'
 export const PublicView: React.FC = () => {
   const navigate = useNavigate()
   const { getActiveEvent, seedDemoEvent, events } = useEventStore()
-  const {
-    theme,
-    mode,
-    toggleTheme,
-  } = useThemeStore()
+  const { theme, mode, toggleTheme } = useThemeStore()
   const [event, setEvent] = useState(getActiveEvent())
   const [showMenu, setShowMenu] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -219,42 +214,6 @@ export const PublicView: React.FC = () => {
             ))}
           </div>
 
-          <div className={styles.carouselNav}>
-            {/* 이전 화살표 */}
-            {currentCardIndex > 0 && (
-              <button
-                className={styles.navArrow}
-                onClick={() => {
-                  setHasInteracted(true)
-                  setCurrentCardIndex(prev => prev - 1)
-                }}
-                aria-label="이전 Day"
-              >
-                <IoChevronBack size={20} />
-              </button>
-            )}
-            {currentCardIndex === 0 && (
-              <div className={styles.navArrowPlaceholder} />
-            )}
-
-            {/* 다음 화살표 */}
-            {currentCardIndex < event.schedules.length - 1 && (
-              <button
-                className={`${styles.navArrow} ${styles.navArrowRight}`}
-                onClick={() => {
-                  setHasInteracted(true)
-                  setCurrentCardIndex(prev => prev + 1)
-                }}
-                aria-label="다음 Day"
-              >
-                <IoChevronForward size={20} />
-              </button>
-            )}
-            {currentCardIndex >= event.schedules.length - 1 && (
-              <div className={styles.navArrowPlaceholder} />
-            )}
-          </div>
-
           <div
             className={styles.carouselContainer}
             onTouchStart={onTouchStart}
@@ -271,8 +230,12 @@ export const PublicView: React.FC = () => {
             <div
               className={`${styles.carouselTrack} ${!hasInteracted && event.schedules.length > 1 ? styles.carouselHint : ''}`}
               style={{
-                transform: hasInteracted ? `translateX(-${currentCardIndex * 100}%)` : undefined,
-                transition: hasInteracted ? 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)' : undefined,
+                transform: hasInteracted
+                  ? `translateX(-${currentCardIndex * 100}%)`
+                  : undefined,
+                transition: hasInteracted
+                  ? 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
+                  : undefined,
               }}
             >
               {event.schedules.map(daySchedule => (
@@ -283,10 +246,7 @@ export const PublicView: React.FC = () => {
                   </div>
                   <div className={styles.timelineItems}>
                     {daySchedule.items.map(item => (
-                      <div
-                        key={item.id}
-                        className={styles.timelineItem}
-                      >
+                      <div key={item.id} className={styles.timelineItem}>
                         <div
                           className={
                             item.isHighlight
