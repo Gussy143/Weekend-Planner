@@ -148,6 +148,67 @@
   user-select: none;
 }
 
+/* Day 네비게이션 화살표 */
+.carouselNav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-2);
+  padding: 0 var(--space-1);
+}
+
+.navArrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: var(--hairline) solid var(--glass-border);
+  background: var(--glass-bg-heavy);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  color: var(--ios-blue);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: var(--glass-shadow);
+}
+
+.navArrow:hover {
+  transform: scale(1.08);
+  background: var(--ios-blue);
+  color: white;
+}
+
+.navArrow:active {
+  transform: scale(0.95);
+}
+
+.navArrowPlaceholder {
+  width: 36px;
+  height: 36px;
+}
+
+/* 유도 애니메이션 (1회) */
+.navArrowHint {
+  animation: arrowHint 1.5s ease-in-out 3;
+}
+
+@keyframes arrowHint {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  40% {
+    transform: translateX(6px);
+  }
+  60% {
+    transform: translateX(-2px);
+  }
+  80% {
+    transform: translateX(3px);
+  }
+}
+
 /* 캐러셀 트랙 */
 .carouselTrack {
   display: flex;
@@ -210,6 +271,17 @@
   align-items: center;
   gap: 0;
   padding: var(--space-2) 0;
+}
+
+/* 하이라이트 카드 */
+.timelineItemHighlight {
+  background: linear-gradient(135deg,
+    rgba(151, 194, 236, 0.08) 0%,
+    rgba(102, 126, 234, 0.12) 50%,
+    rgba(118, 75, 162, 0.08) 100%);
+  border-radius: var(--radius-lg);
+  margin: 2px -8px;
+  padding: var(--space-2) 8px;
 }
 
 /* 도트 (22x22, 좌측 고정) */
@@ -656,6 +728,58 @@
 
 .menuItem:active {
   background: var(--ios-fill-secondary);
+}
+
+/* 컬러 테마 섹션 */
+.colorThemeSection {
+  padding: var(--space-3) var(--space-4);
+  border-top: var(--hairline) solid var(--ios-separator);
+}
+
+.colorThemeLabel {
+  font-size: var(--text-xs);
+  color: var(--ios-label-tertiary);
+  font-weight: var(--weight-medium);
+  display: block;
+  margin-bottom: var(--space-2);
+}
+
+.colorThemePicker {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.colorThemeDot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+  outline: none;
+}
+
+.colorThemeDot:hover {
+  transform: scale(1.15);
+}
+
+.colorThemeDotActive {
+  border-color: var(--ios-label-primary);
+  box-shadow: 0 0 0 2px var(--ios-bg-primary), 0 0 0 4px var(--ios-label-secondary);
+}
+
+.colorThemeCustom {
+  background: conic-gradient(
+    #ff6b6b, #ffa500, #ffd93d, #6bcb77, #4d96ff, #9b59b6, #ff6b6b
+  );
+  font-size: 12px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
 }
 
 /* Mobile Responsive */

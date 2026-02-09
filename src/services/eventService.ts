@@ -229,6 +229,8 @@ export class EventService {
           kakaoMapUrl: location.kakao_map_url || undefined,
           transport,
           note: location.note || undefined,
+          pensionUrl: location.pension_url || undefined,
+          pensionLinkTitle: location.pension_link_title || undefined,
         },
       }
     } catch (error) {
@@ -270,6 +272,8 @@ export class EventService {
           address: '',
           transport: [],
         },
+        _mainContentCount: e.main_content?.[0]?.count ?? 0,
+        _daySchedulesCount: e.day_schedules?.[0]?.count ?? 0,
       }))
     } catch (error) {
       console.error('Error in getAllEvents:', error)
@@ -475,6 +479,8 @@ export class EventService {
             naver_map_url: event.location.naverMapUrl || null,
             kakao_map_url: event.location.kakaoMapUrl || null,
             note: event.location.note || null,
+            pension_url: event.location.pensionUrl || null,
+            pension_link_title: event.location.pensionLinkTitle || null,
           })
           .select()
           .single()

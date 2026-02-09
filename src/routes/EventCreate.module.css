@@ -480,6 +480,17 @@
   padding: var(--space-2) 0;
 }
 
+/* 미리보기 하이라이트 카드 */
+.previewTimelineItemHighlight {
+  background: linear-gradient(135deg,
+    rgba(151, 194, 236, 0.08) 0%,
+    rgba(102, 126, 234, 0.12) 50%,
+    rgba(118, 75, 162, 0.08) 100%);
+  border-radius: var(--radius-lg);
+  margin: 2px -8px;
+  padding: var(--space-2) 8px;
+}
+
 .previewTimelineDot {
   position: relative;
   flex-shrink: 0;
@@ -710,6 +721,101 @@
   font-style: italic;
 }
 
+/* Mobile Preview FAB & Overlay */
+.mobilePreviewFab {
+  display: none;
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--brand-blue, #007AFF);
+  color: #fff;
+  border: none;
+  box-shadow: 0 4px 14px rgba(0, 122, 255, 0.4);
+  cursor: pointer;
+  z-index: 999;
+  font-size: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.mobilePreviewFab:active {
+  transform: scale(0.92);
+  box-shadow: 0 2px 8px rgba(0, 122, 255, 0.3);
+}
+
+.mobilePreviewOverlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: var(--ios-bg-grouped, #f2f2f7);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  animation: mobilePreviewSlideUp 0.3s ease-out;
+}
+
+@keyframes mobilePreviewSlideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.mobilePreviewOverlayOpen {
+  display: block;
+}
+
+.mobilePreviewHeader {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: var(--glass-bg-heavy, rgba(255,255,255,0.85));
+  backdrop-filter: var(--glass-blur, blur(20px));
+  -webkit-backdrop-filter: var(--glass-blur, blur(20px));
+  border-bottom: var(--hairline, 0.5px) solid var(--glass-border, rgba(0,0,0,0.1));
+}
+
+.mobilePreviewHeader span {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ios-label-primary, #000);
+}
+
+.mobilePreviewCloseBtn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 14px;
+  border: none;
+  border-radius: 20px;
+  background: var(--ios-fill-tertiary, rgba(0,0,0,0.08));
+  color: var(--brand-blue, #007AFF);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.mobilePreviewCloseBtn:active {
+  background: var(--ios-fill-secondary, rgba(0,0,0,0.12));
+}
+
+.mobilePreviewBody {
+  padding-bottom: 40px;
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
   .content {
@@ -718,6 +824,10 @@
 
   .preview {
     display: none;
+  }
+
+  .mobilePreviewFab {
+    display: flex;
   }
 }
 

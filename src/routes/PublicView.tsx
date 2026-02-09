@@ -4,6 +4,9 @@ import {
   IoSettingsSharp,
   IoLocationSharp,
   IoCopyOutline,
+  IoChevronBack,
+  IoChevronForward,
+  IoShareSocial,
 } from 'react-icons/io5'
 import {
   MdAdminPanelSettings,
@@ -15,7 +18,7 @@ import { IoMdClose } from 'react-icons/io'
 import { getIconComponent } from '../components/IconPicker'
 import { LuSparkles } from 'react-icons/lu'
 import { useEventStore } from '../store/useEventStore'
-import { useThemeStore } from '../store/useThemeStore'
+import { useThemeStore, COLOR_THEMES, type ColorTheme } from '../store/useThemeStore'
 import { EventService } from '../services/eventService'
 import { KakaoMap } from '../components/KakaoMap'
 import styles from './PublicView.module.css'
@@ -23,7 +26,7 @@ import styles from './PublicView.module.css'
 export const PublicView: React.FC = () => {
   const navigate = useNavigate()
   const { getActiveEvent, seedDemoEvent, events } = useEventStore()
-  const { theme, mode, toggleTheme } = useThemeStore()
+  const { theme, mode, toggleTheme, colorTheme, setColorTheme, setCustomColors, customColors } = useThemeStore()
   const [event, setEvent] = useState(getActiveEvent())
   const [showMenu, setShowMenu] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -35,6 +38,48 @@ export const PublicView: React.FC = () => {
     null
   )
   const [copied, setCopied] = useState(false)
+  const [hasInteracted, setHasInteracted] = useState(false)
+
+  // 카카오 SDK 초기화
+  useEffect(() => {
+    const w = window as any
+    if (w.Kakao && !w.Kakao.isInitialized()) {
+      w.Kakao.init(import.meta.env.VITE_KAKAO_MAP_APP_KEY)
+    }
+  }, [])
+
+  // 카카오톡 공유
+  const handleKakaoShare = useCallback(() => {
+    const w = window as any
+    if (!w.Kakao) {
+      alert('카카오 SDK를 불러올 수 없습니다.')
+      return
+    }
+    if (!event) return
+
+    w.Kakao.Share.sendDefault({
+      objectType: 'feed',
+      content: {
+        title: event.title,
+        description: event.subtitle || '주말 여행 일정을 확인해보세요!',
+        imageUrl: 'https://img.icons8.com/fluency/512/calendar.png',
+        link: {
+          mobileWebUrl: window.location.href,
+          webUrl: window.location.href,
+        },
+      },
+      buttons: [
+        {
+          title: '일정 확인하기',
+          link: {
+            mobileWebUrl: window.location.href,
+            webUrl: window.location.href,
+          },
+        },
+      ],
+    })
+    setShowMenu(false)
+  }, [event])
 
   // 주소 복사 핸들러
   const handleCopyAddress = useCallback(async () => {
@@ -82,6 +127,7 @@ export const PublicView: React.FC = () => {
     const isHorizontalSwipe = Math.abs(distanceX) > Math.abs(distanceY)
 
     if (isHorizontalSwipe && Math.abs(distanceX) > minSwipeDistance) {
+      setHasInteracted(true)
       if (distanceX > 0 && currentCardIndex < event.schedules.length - 1) {
         // 왼쪽으로 스와이프 (다음 카드)
         setCurrentCardIndex(prev => prev + 1)
@@ -169,6 +215,32 @@ export const PublicView: React.FC = () => {
             ))}
           </div>
 
+          <div className={styles.carouselNav}>
+            {/* 이전 화살표 */}
+            {currentCardIndex > 0 && (
+              <button
+                className={styles.navArrow}
+                onClick={() => { setHasInteracted(true); setCurrentCardIndex(prev => prev - 1) }}
+                aria-label="이전 Day"
+              >
+                <IoChevronBack size={20} />
+              </button>
+            )}
+            {currentCardIndex === 0 && <div className={styles.navArrowPlaceholder} />}
+
+            {/* 다음 화살표 (유도 애니메이션) */}
+            {currentCardIndex < event.schedules.length - 1 && (
+              <button
+                className={`${styles.navArrow} ${styles.navArrowRight} ${!hasInteracted ? styles.navArrowHint : ''}`}
+                onClick={() => { setHasInteracted(true); setCurrentCardIndex(prev => prev + 1) }}
+                aria-label="다음 Day"
+              >
+                <IoChevronForward size={20} />
+              </button>
+            )}
+            {currentCardIndex >= event.schedules.length - 1 && <div className={styles.navArrowPlaceholder} />}
+          </div>
+
           <div
             className={styles.carouselContainer}
             onTouchStart={onTouchStart}
@@ -190,7 +262,7 @@ export const PublicView: React.FC = () => {
                   </div>
                   <div className={styles.timelineItems}>
                     {daySchedule.items.map(item => (
-                      <div key={item.id} className={styles.timelineItem}>
+                      <div key={item.id} className={`${styles.timelineItem} ${item.isHighlight ? styles.timelineItemHighlight : ''}`}>
                         <div
                           className={
                             item.isHighlight
@@ -250,14 +322,16 @@ export const PublicView: React.FC = () => {
                 </button>
               </div>
 
-              <a
-                href="https://nol.yanolja.com/stay/domestic/10067499?checkInDate=2026-02-08&checkOutDate=2026-02-09&adultPax=2"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.pensionLink}
-              >
-                펜션 정보 바로가기 &gt;
-              </a>
+              {event.location.pensionUrl && (
+                <a
+                  href={event.location.pensionUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.pensionLink}
+                >
+                  {event.location.pensionLinkTitle || '펜션 정보 바로가기'} &gt;
+                </a>
+              )}
             </div>
           </div>
 
@@ -345,6 +419,13 @@ export const PublicView: React.FC = () => {
         <div className={styles.settingsMenu}>
           <button
             className={styles.menuItem}
+            onClick={handleKakaoShare}
+          >
+            <IoShareSocial size={20} />
+            <span>카카오톡 공유</span>
+          </button>
+          <button
+            className={styles.menuItem}
             onClick={() => navigate('/admin/login')}
           >
             <MdAdminPanelSettings size={20} />
@@ -372,6 +453,37 @@ export const PublicView: React.FC = () => {
                   : '시스템'}
             </span>
           </button>
+
+          {/* 컬러 테마 */}
+          <div className={styles.colorThemeSection}>
+            <span className={styles.colorThemeLabel}>컬러 테마</span>
+            <div className={styles.colorThemePicker}>
+              {(Object.keys(COLOR_THEMES) as Array<Exclude<ColorTheme, 'custom'>>).map(key => (
+                <button
+                  key={key}
+                  className={`${styles.colorThemeDot} ${colorTheme === key ? styles.colorThemeDotActive : ''}`}
+                  style={{ background: COLOR_THEMES[key].primary }}
+                  onClick={() => setColorTheme(key)}
+                  title={COLOR_THEMES[key].name}
+                />
+              ))}
+              <button
+                className={`${styles.colorThemeDot} ${styles.colorThemeCustom} ${colorTheme === 'custom' ? styles.colorThemeDotActive : ''}`}
+                onClick={() => {
+                  const color = prompt('메인 색상 HEX 코드 (예: #ff6b6b)', customColors.primary)
+                  if (color && /^#[0-9a-fA-F]{6}$/.test(color)) {
+                    const accent = prompt('강조 색상 HEX 코드 (예: #e55a5a)', customColors.accent)
+                    if (accent && /^#[0-9a-fA-F]{6}$/.test(accent)) {
+                      setCustomColors({ primary: color, accent, bg: customColors.bg })
+                    }
+                  }
+                }}
+                title="커스텀 테마"
+              >
+                ✎
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

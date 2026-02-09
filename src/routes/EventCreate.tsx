@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { IoMdArrowBack, IoMdAdd, IoMdTrash } from 'react-icons/io'
-import { IoLocationSharp } from 'react-icons/io5'
+import { IoMdArrowBack, IoMdAdd, IoMdTrash, IoMdEye } from 'react-icons/io'
+import { IoLocationSharp, IoClose } from 'react-icons/io5'
 import { MdSave, MdDirectionsBus } from 'react-icons/md'
 import { useEventStore } from '../store/useEventStore'
 import { EventService } from '../services/eventService'
@@ -47,6 +47,11 @@ export const EventCreate: React.FC = () => {
   const [naverMapUrl, setNaverMapUrl] = useState('')
   const [kakaoMapUrl, setKakaoMapUrl] = useState('')
   const [locationNote, setLocationNote] = useState('')
+  const [pensionUrl, setPensionUrl] = useState('')
+  const [pensionLinkTitle, setPensionLinkTitle] = useState('')
+
+  // 모바일 미리보기
+  const [showMobilePreview, setShowMobilePreview] = useState(false)
 
   // 교통편
   const [transportTypes, setTransportTypes] = useState<
@@ -242,6 +247,8 @@ export const EventCreate: React.FC = () => {
             routes: t.routes.filter(r => r.from.trim() && r.to.trim()),
           })),
         note: locationNote || undefined,
+        pensionUrl: pensionUrl || undefined,
+        pensionLinkTitle: pensionLinkTitle || undefined,
       },
     }
 
@@ -600,6 +607,26 @@ export const EventCreate: React.FC = () => {
                 rows={2}
               />
             </div>
+            <div className={styles.formGroup}>
+              <label>외부 링크 제목</label>
+              <input
+                type="text"
+                value={pensionLinkTitle}
+                onChange={e => setPensionLinkTitle(e.target.value)}
+                placeholder="예: 펜션 정보 바로가기"
+                className={styles.input}
+              />
+            </div>
+            <div className={styles.formGroup}>
+              <label>외부 링크 URL</label>
+              <input
+                type="url"
+                value={pensionUrl}
+                onChange={e => setPensionUrl(e.target.value)}
+                placeholder="https://..."
+                className={styles.input}
+              />
+            </div>
 
             {/* 교통편 */}
             <div className={styles.sectionHeader}>
@@ -752,7 +779,7 @@ export const EventCreate: React.FC = () => {
                           {day.items.map(item => (
                             <div
                               key={item.id}
-                              className={styles.previewTimelineItem}
+                              className={`${styles.previewTimelineItem} ${item.isHighlight ? styles.previewTimelineItemHighlight : ''}`}
                             >
                               <div
                                 className={
@@ -871,6 +898,141 @@ export const EventCreate: React.FC = () => {
                 </div>
               )}
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Preview FAB */}
+      <button
+        className={styles.mobilePreviewFab}
+        onClick={() => setShowMobilePreview(true)}
+        title="미리보기"
+      >
+        <IoMdEye />
+      </button>
+
+      {/* Mobile Preview Overlay */}
+      <div className={`${styles.mobilePreviewOverlay} ${showMobilePreview ? styles.mobilePreviewOverlayOpen : ''}`}>
+        <div className={styles.mobilePreviewHeader}>
+          <span>미리보기</span>
+          <button className={styles.mobilePreviewCloseBtn} onClick={() => setShowMobilePreview(false)}>
+            <IoClose size={18} />
+            닫기
+          </button>
+        </div>
+        <div className={styles.mobilePreviewBody}>
+          <div className={styles.previewPhone}>
+            {/* Header */}
+            <div className={styles.previewHeader}>
+              <h1>{title || '이벤트 제목'}</h1>
+              {subtitle && <p>{subtitle}</p>}
+            </div>
+
+            {/* Main Content Cards */}
+            {mainContent.some(c => c.title || c.description) && (
+              <div className={styles.previewSection}>
+                <div className={styles.previewCards}>
+                  {mainContent
+                    .filter(c => c.title || c.description)
+                    .map(card => (
+                      <div key={card.id} className={styles.previewCard}>
+                        <div className={styles.previewCardIcon}>
+                          {(() => {
+                            const IC = getIconComponent(card.icon)
+                            return IC ? <IC size={22} /> : '❓'
+                          })()}
+                        </div>
+                        <div className={styles.previewCardContent}>
+                          <h4>{card.title || '제목 없음'}</h4>
+                          <p>{card.description || '설명 없음'}</p>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </div>
+            )}
+
+            {/* Timetable */}
+            {schedules.some(s => s.date && s.items.length > 0) && (
+              <div className={styles.previewSection}>
+                <h2 className={styles.previewSectionTitle}>타임테이블</h2>
+                {schedules
+                  .filter(s => s.date && s.items.length > 0)
+                  .map(day => (
+                    <div key={day.day} className={styles.previewDayCard}>
+                      <div className={styles.previewDayHeader}>
+                        <span className={styles.previewDayTitle}>Day {day.day}</span>
+                        <span className={styles.previewDayDate}>{day.date}</span>
+                      </div>
+                      <div className={styles.previewTimelineItems}>
+                        {day.items.map(item => (
+                          <div
+                            key={item.id}
+                            className={`${styles.previewTimelineItem} ${item.isHighlight ? styles.previewTimelineItemHighlight : ''}`}
+                          >
+                            <div className={item.isHighlight ? styles.previewTimelineDotHighlight : styles.previewTimelineDot}>
+                              {item.order}
+                            </div>
+                            <div className={styles.previewTimelineContent}>
+                              <div className={styles.previewTime}>
+                                {item.time}
+                                {item.duration && <span className={styles.previewTimeDuration}> · {item.duration}</span>}
+                              </div>
+                              <div className={styles.previewTimelineTitle}>{item.title}</div>
+                              {item.subtitle && <div className={styles.previewTimelineSubtitle}>{item.subtitle}</div>}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            )}
+
+            {/* Location */}
+            {(locationName || locationAddress) && (
+              <div className={styles.previewSection}>
+                <h2 className={styles.previewSectionTitle}>오시는 길</h2>
+                <div className={styles.previewLocation}>
+                  <div className={styles.previewLocationHeader}>
+                    <div className={styles.previewLocationIcon}>
+                      <IoLocationSharp size={24} />
+                    </div>
+                    <div>
+                      <h3 className={styles.previewLocationName}>{locationName || '장소명'}</h3>
+                      <p className={styles.previewLocationAddress}>{locationAddress || '주소'}</p>
+                    </div>
+                  </div>
+                  <div className={styles.previewMapButtons}>
+                    <span className={styles.previewMapButton}>네이버 지도</span>
+                    <span className={styles.previewMapButton}>카카오맵</span>
+                  </div>
+                  {transportTypes.some(t => t.type && t.routes.some(r => r.from || r.to)) && (
+                    <div className={styles.previewTransportInfo}>
+                      <h4 className={styles.previewTransportTitle}>
+                        <MdDirectionsBus size={20} style={{ marginRight: '6px' }} />
+                        대중교통
+                      </h4>
+                      {transportTypes
+                        .filter(t => t.type && t.routes.length > 0)
+                        .map((transport, idx) => (
+                          <div key={idx}>
+                            {transport.routes.map((route, ridx) => (
+                              <div key={ridx} className={styles.previewTransportItem}>
+                                <span className={styles.previewTransportType}>{transport.type}</span>
+                                <span className={styles.previewTransportDivider}>|</span>
+                                <span className={styles.previewTransportRoute}>{route.from} → {route.to}</span>
+                                <span className={styles.previewTransportTime}>{route.time}</span>
+                              </div>
+                            ))}
+                          </div>
+                        ))}
+                      {locationNote && <p className={styles.previewTransportNote}>{locationNote}</p>}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

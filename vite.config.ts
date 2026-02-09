@@ -8,7 +8,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '/Weekend-Planner/',
+  base: '/',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

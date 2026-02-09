@@ -38,6 +38,8 @@ export interface LocationInfo {
   kakaoMapUrl?: string
   transport: TransportInfo[]
   note?: string
+  pensionUrl?: string
+  pensionLinkTitle?: string
 }
 
 export interface Event {
