@@ -230,12 +230,8 @@ export const PublicView: React.FC = () => {
             <div
               className={`${styles.carouselTrack} ${!hasInteracted && event.schedules.length > 1 ? styles.carouselHint : ''}`}
               style={{
-                transform: hasInteracted
-                  ? `translateX(-${currentCardIndex * 100}%)`
-                  : undefined,
-                transition: hasInteracted
-                  ? 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
-                  : undefined,
+                transform: `translateX(-${currentCardIndex * 100}%)`,
+                transition: 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
               }}
             >
               {event.schedules.map(daySchedule => (

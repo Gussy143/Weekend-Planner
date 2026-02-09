@@ -149,6 +149,7 @@
 }
 
 /* 카드 스와이프 유도 애니메이션 (넘기기 전까지 무한 반복) */
+/* margin-left 사용 — transform 기반 슬라이드 전환과 간섭 방지 */
 .carouselHint {
   animation: cardNudge 2.5s ease-in-out infinite;
 }
@@ -156,16 +157,16 @@
 @keyframes cardNudge {
   0%,
   100% {
-    transform: translateX(0);
+    margin-left: 0;
   }
   30% {
-    transform: translateX(-18px);
+    margin-left: -18px;
   }
   50% {
-    transform: translateX(4px);
+    margin-left: 4px;
   }
   70% {
-    transform: translateX(-6px);
+    margin-left: -6px;
   }
 }
 
