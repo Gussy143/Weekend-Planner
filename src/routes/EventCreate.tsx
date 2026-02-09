@@ -779,7 +779,7 @@ export const EventCreate: React.FC = () => {
                           {day.items.map(item => (
                             <div
                               key={item.id}
-                              className={`${styles.previewTimelineItem} ${item.isHighlight ? styles.previewTimelineItemHighlight : ''}`}
+                              className={styles.previewTimelineItem}
                             >
                               <div
                                 className={
@@ -912,10 +912,15 @@ export const EventCreate: React.FC = () => {
       </button>
 
       {/* Mobile Preview Overlay */}
-      <div className={`${styles.mobilePreviewOverlay} ${showMobilePreview ? styles.mobilePreviewOverlayOpen : ''}`}>
+      <div
+        className={`${styles.mobilePreviewOverlay} ${showMobilePreview ? styles.mobilePreviewOverlayOpen : ''}`}
+      >
         <div className={styles.mobilePreviewHeader}>
           <span>미리보기</span>
-          <button className={styles.mobilePreviewCloseBtn} onClick={() => setShowMobilePreview(false)}>
+          <button
+            className={styles.mobilePreviewCloseBtn}
+            onClick={() => setShowMobilePreview(false)}
+          >
             <IoClose size={18} />
             닫기
           </button>
@@ -961,25 +966,46 @@ export const EventCreate: React.FC = () => {
                   .map(day => (
                     <div key={day.day} className={styles.previewDayCard}>
                       <div className={styles.previewDayHeader}>
-                        <span className={styles.previewDayTitle}>Day {day.day}</span>
-                        <span className={styles.previewDayDate}>{day.date}</span>
+                        <span className={styles.previewDayTitle}>
+                          Day {day.day}
+                        </span>
+                        <span className={styles.previewDayDate}>
+                          {day.date}
+                        </span>
                       </div>
                       <div className={styles.previewTimelineItems}>
                         {day.items.map(item => (
                           <div
                             key={item.id}
-                            className={`${styles.previewTimelineItem} ${item.isHighlight ? styles.previewTimelineItemHighlight : ''}`}
+                            className={styles.previewTimelineItem}
                           >
-                            <div className={item.isHighlight ? styles.previewTimelineDotHighlight : styles.previewTimelineDot}>
+                            <div
+                              className={
+                                item.isHighlight
+                                  ? styles.previewTimelineDotHighlight
+                                  : styles.previewTimelineDot
+                              }
+                            >
                               {item.order}
                             </div>
                             <div className={styles.previewTimelineContent}>
                               <div className={styles.previewTime}>
                                 {item.time}
-                                {item.duration && <span className={styles.previewTimeDuration}> · {item.duration}</span>}
+                                {item.duration && (
+                                  <span className={styles.previewTimeDuration}>
+                                    {' '}
+                                    · {item.duration}
+                                  </span>
+                                )}
                               </div>
-                              <div className={styles.previewTimelineTitle}>{item.title}</div>
-                              {item.subtitle && <div className={styles.previewTimelineSubtitle}>{item.subtitle}</div>}
+                              <div className={styles.previewTimelineTitle}>
+                                {item.title}
+                              </div>
+                              {item.subtitle && (
+                                <div className={styles.previewTimelineSubtitle}>
+                                  {item.subtitle}
+                                </div>
+                              )}
                             </div>
                           </div>
                         ))}
@@ -999,18 +1025,27 @@ export const EventCreate: React.FC = () => {
                       <IoLocationSharp size={24} />
                     </div>
                     <div>
-                      <h3 className={styles.previewLocationName}>{locationName || '장소명'}</h3>
-                      <p className={styles.previewLocationAddress}>{locationAddress || '주소'}</p>
+                      <h3 className={styles.previewLocationName}>
+                        {locationName || '장소명'}
+                      </h3>
+                      <p className={styles.previewLocationAddress}>
+                        {locationAddress || '주소'}
+                      </p>
                     </div>
                   </div>
                   <div className={styles.previewMapButtons}>
                     <span className={styles.previewMapButton}>네이버 지도</span>
                     <span className={styles.previewMapButton}>카카오맵</span>
                   </div>
-                  {transportTypes.some(t => t.type && t.routes.some(r => r.from || r.to)) && (
+                  {transportTypes.some(
+                    t => t.type && t.routes.some(r => r.from || r.to)
+                  ) && (
                     <div className={styles.previewTransportInfo}>
                       <h4 className={styles.previewTransportTitle}>
-                        <MdDirectionsBus size={20} style={{ marginRight: '6px' }} />
+                        <MdDirectionsBus
+                          size={20}
+                          style={{ marginRight: '6px' }}
+                        />
                         대중교통
                       </h4>
                       {transportTypes
@@ -1018,16 +1053,33 @@ export const EventCreate: React.FC = () => {
                         .map((transport, idx) => (
                           <div key={idx}>
                             {transport.routes.map((route, ridx) => (
-                              <div key={ridx} className={styles.previewTransportItem}>
-                                <span className={styles.previewTransportType}>{transport.type}</span>
-                                <span className={styles.previewTransportDivider}>|</span>
-                                <span className={styles.previewTransportRoute}>{route.from} → {route.to}</span>
-                                <span className={styles.previewTransportTime}>{route.time}</span>
+                              <div
+                                key={ridx}
+                                className={styles.previewTransportItem}
+                              >
+                                <span className={styles.previewTransportType}>
+                                  {transport.type}
+                                </span>
+                                <span
+                                  className={styles.previewTransportDivider}
+                                >
+                                  |
+                                </span>
+                                <span className={styles.previewTransportRoute}>
+                                  {route.from} → {route.to}
+                                </span>
+                                <span className={styles.previewTransportTime}>
+                                  {route.time}
+                                </span>
                               </div>
                             ))}
                           </div>
                         ))}
-                      {locationNote && <p className={styles.previewTransportNote}>{locationNote}</p>}
+                      {locationNote && (
+                        <p className={styles.previewTransportNote}>
+                          {locationNote}
+                        </p>
+                      )}
                     </div>
                   )}
                 </div>

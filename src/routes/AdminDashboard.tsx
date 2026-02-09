@@ -67,9 +67,19 @@ export const AdminDashboard: React.FC = () => {
               <p>이벤트 ID: {displayEvent.id}</p>
               <div className={styles.stats}>
                 <span>
-                  메인 콘텐츠: {(displayEvent as any)._mainContentCount ?? displayEvent.mainContent?.length ?? 0}개
+                  메인 콘텐츠:{' '}
+                  {(displayEvent as any)._mainContentCount ??
+                    displayEvent.mainContent?.length ??
+                    0}
+                  개
                 </span>
-                <span>일정: {(displayEvent as any)._daySchedulesCount ?? displayEvent.schedules?.length ?? 0}일</span>
+                <span>
+                  일정:{' '}
+                  {(displayEvent as any)._daySchedulesCount ??
+                    displayEvent.schedules?.length ??
+                    0}
+                  일
+                </span>
               </div>
             </div>
           ) : (

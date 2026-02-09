@@ -18,7 +18,7 @@ import { IoMdClose } from 'react-icons/io'
 import { getIconComponent } from '../components/IconPicker'
 import { LuSparkles } from 'react-icons/lu'
 import { useEventStore } from '../store/useEventStore'
-import { useThemeStore, COLOR_THEMES, type ColorTheme } from '../store/useThemeStore'
+import { useThemeStore } from '../store/useThemeStore'
 import { EventService } from '../services/eventService'
 import { KakaoMap } from '../components/KakaoMap'
 import styles from './PublicView.module.css'
@@ -26,7 +26,11 @@ import styles from './PublicView.module.css'
 export const PublicView: React.FC = () => {
   const navigate = useNavigate()
   const { getActiveEvent, seedDemoEvent, events } = useEventStore()
-  const { theme, mode, toggleTheme, colorTheme, setColorTheme, setCustomColors, customColors } = useThemeStore()
+  const {
+    theme,
+    mode,
+    toggleTheme,
+  } = useThemeStore()
   const [event, setEvent] = useState(getActiveEvent())
   const [showMenu, setShowMenu] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -220,25 +224,35 @@ export const PublicView: React.FC = () => {
             {currentCardIndex > 0 && (
               <button
                 className={styles.navArrow}
-                onClick={() => { setHasInteracted(true); setCurrentCardIndex(prev => prev - 1) }}
+                onClick={() => {
+                  setHasInteracted(true)
+                  setCurrentCardIndex(prev => prev - 1)
+                }}
                 aria-label="이전 Day"
               >
                 <IoChevronBack size={20} />
               </button>
             )}
-            {currentCardIndex === 0 && <div className={styles.navArrowPlaceholder} />}
+            {currentCardIndex === 0 && (
+              <div className={styles.navArrowPlaceholder} />
+            )}
 
-            {/* 다음 화살표 (유도 애니메이션) */}
+            {/* 다음 화살표 */}
             {currentCardIndex < event.schedules.length - 1 && (
               <button
-                className={`${styles.navArrow} ${styles.navArrowRight} ${!hasInteracted ? styles.navArrowHint : ''}`}
-                onClick={() => { setHasInteracted(true); setCurrentCardIndex(prev => prev + 1) }}
+                className={`${styles.navArrow} ${styles.navArrowRight}`}
+                onClick={() => {
+                  setHasInteracted(true)
+                  setCurrentCardIndex(prev => prev + 1)
+                }}
                 aria-label="다음 Day"
               >
                 <IoChevronForward size={20} />
               </button>
             )}
-            {currentCardIndex >= event.schedules.length - 1 && <div className={styles.navArrowPlaceholder} />}
+            {currentCardIndex >= event.schedules.length - 1 && (
+              <div className={styles.navArrowPlaceholder} />
+            )}
           </div>
 
           <div
@@ -247,11 +261,18 @@ export const PublicView: React.FC = () => {
             onTouchMove={onTouchMove}
             onTouchEnd={onTouchEnd}
           >
+            {/* 스와이프 유도 화살표 오버레이 */}
+            {!hasInteracted && event.schedules.length > 1 && (
+              <div className={styles.swipeHintOverlay}>
+                <IoChevronForward size={28} />
+              </div>
+            )}
+
             <div
-              className={styles.carouselTrack}
+              className={`${styles.carouselTrack} ${!hasInteracted && event.schedules.length > 1 ? styles.carouselHint : ''}`}
               style={{
-                transform: `translateX(-${currentCardIndex * 100}%)`,
-                transition: 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                transform: hasInteracted ? `translateX(-${currentCardIndex * 100}%)` : undefined,
+                transition: hasInteracted ? 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)' : undefined,
               }}
             >
               {event.schedules.map(daySchedule => (
@@ -262,7 +283,10 @@ export const PublicView: React.FC = () => {
                   </div>
                   <div className={styles.timelineItems}>
                     {daySchedule.items.map(item => (
-                      <div key={item.id} className={`${styles.timelineItem} ${item.isHighlight ? styles.timelineItemHighlight : ''}`}>
+                      <div
+                        key={item.id}
+                        className={styles.timelineItem}
+                      >
                         <div
                           className={
                             item.isHighlight
@@ -417,10 +441,7 @@ export const PublicView: React.FC = () => {
       {/* Settings Menu */}
       {showMenu && (
         <div className={styles.settingsMenu}>
-          <button
-            className={styles.menuItem}
-            onClick={handleKakaoShare}
-          >
+          <button className={styles.menuItem} onClick={handleKakaoShare}>
             <IoShareSocial size={20} />
             <span>카카오톡 공유</span>
           </button>
@@ -453,37 +474,6 @@ export const PublicView: React.FC = () => {
                   : '시스템'}
             </span>
           </button>
-
-          {/* 컬러 테마 */}
-          <div className={styles.colorThemeSection}>
-            <span className={styles.colorThemeLabel}>컬러 테마</span>
-            <div className={styles.colorThemePicker}>
-              {(Object.keys(COLOR_THEMES) as Array<Exclude<ColorTheme, 'custom'>>).map(key => (
-                <button
-                  key={key}
-                  className={`${styles.colorThemeDot} ${colorTheme === key ? styles.colorThemeDotActive : ''}`}
-                  style={{ background: COLOR_THEMES[key].primary }}
-                  onClick={() => setColorTheme(key)}
-                  title={COLOR_THEMES[key].name}
-                />
-              ))}
-              <button
-                className={`${styles.colorThemeDot} ${styles.colorThemeCustom} ${colorTheme === 'custom' ? styles.colorThemeDotActive : ''}`}
-                onClick={() => {
-                  const color = prompt('메인 색상 HEX 코드 (예: #ff6b6b)', customColors.primary)
-                  if (color && /^#[0-9a-fA-F]{6}$/.test(color)) {
-                    const accent = prompt('강조 색상 HEX 코드 (예: #e55a5a)', customColors.accent)
-                    if (accent && /^#[0-9a-fA-F]{6}$/.test(accent)) {
-                      setCustomColors({ primary: color, accent, bg: customColors.bg })
-                    }
-                  }
-                }}
-                title="커스텀 테마"
-              >
-                ✎
-              </button>
-            </div>
-          </div>
         </div>
       )}
     </div>
