@@ -57,26 +57,13 @@ export const PublicView: React.FC = () => {
     }
     if (!event) return
 
-    w.Kakao.Share.sendDefault({
-      objectType: 'feed',
-      content: {
+    w.Kakao.Share.sendCustom({
+      templateId: 129231,
+      templateArgs: {
         title: event.title,
         description: event.subtitle || '주말 여행 일정을 확인해보세요!',
-        imageUrl: 'https://img.icons8.com/fluency/512/calendar.png',
-        link: {
-          mobileWebUrl: window.location.href,
-          webUrl: window.location.href,
-        },
+        url: window.location.href,
       },
-      buttons: [
-        {
-          title: '일정 확인하기',
-          link: {
-            mobileWebUrl: window.location.href,
-            webUrl: window.location.href,
-          },
-        },
-      ],
     })
     setShowMenu(false)
   }, [event])
