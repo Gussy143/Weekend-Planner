@@ -732,3 +732,135 @@
     font-size: var(--text-lg);
   }
 }
+
+/* === Card Highlight (gradient border animation) === */
+.cardHighlight {
+  border: 2px solid transparent;
+  background-image:
+    linear-gradient(var(--ios-bg-grouped), var(--ios-bg-grouped)),
+    linear-gradient(135deg, #97c2ec, #667eea, #764ba2, #f093fb, #97c2ec);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  background-size:
+    100% 100%,
+    300% 300%;
+  animation: cardGradientFlow 3s ease infinite;
+}
+
+@keyframes cardGradientFlow {
+  0% {
+    background-position: 0 0, 0% 50%;
+  }
+  50% {
+    background-position: 0 0, 100% 50%;
+  }
+  100% {
+    background-position: 0 0, 0% 50%;
+  }
+}
+
+/* === Card Arrow Indicator === */
+.cardArrow {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  color: var(--ios-label-tertiary);
+  opacity: 0.6;
+}
+
+/* === Detail Popup Overlay === */
+.detailOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  animation: detailFadeIn 0.25s ease;
+}
+
+@keyframes detailFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.detailPopup {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  max-height: 80vh;
+  overflow-y: auto;
+  background: var(--ios-bg-secondary);
+  border-radius: var(--radius-xl, 16px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
+  animation: detailSlideUp 0.3s ease;
+}
+
+@keyframes detailSlideUp {
+  from {
+    transform: translateY(24px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.detailPopupClose {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.45);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: background 0.15s;
+}
+
+.detailPopupClose:hover {
+  background: rgba(0, 0, 0, 0.65);
+}
+
+.detailPopupImage {
+  width: 100%;
+  display: block;
+  border-radius: var(--radius-xl, 16px) var(--radius-xl, 16px) 0 0;
+  object-fit: cover;
+  max-height: 280px;
+}
+
+.detailPopupBody {
+  padding: var(--space-4) var(--space-5);
+}
+
+.detailPopupTitle {
+  font-size: var(--text-lg, 1.1rem);
+  font-weight: var(--weight-bold, 700);
+  color: var(--ios-label-primary);
+  margin-bottom: var(--space-2, 8px);
+}
+
+.detailPopupText {
+  font-size: var(--text-base, 0.95rem);
+  color: var(--ios-label-secondary);
+  line-height: var(--leading-relaxed, 1.6);
+  white-space: pre-wrap;
+}

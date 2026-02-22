@@ -20,6 +20,7 @@ import { useEventStore } from '../store/useEventStore'
 import { useThemeStore } from '../store/useThemeStore'
 import { EventService } from '../services/eventService'
 import { KakaoMap } from '../components/KakaoMap'
+import type { ContentCard } from '../types/event'
 import styles from './PublicView.module.css'
 
 export const PublicView: React.FC = () => {
@@ -38,6 +39,7 @@ export const PublicView: React.FC = () => {
   )
   const [copied, setCopied] = useState(false)
   const [hasInteracted, setHasInteracted] = useState(false)
+  const [detailCard, setDetailCard] = useState<ContentCard | null>(null)
 
   // 카카오 SDK 초기화
   useEffect(() => {
@@ -160,7 +162,21 @@ export const PublicView: React.FC = () => {
   return (
     <div className={styles.container}>
       {/* Header */}
-      <header className={styles.header}>
+      <header
+        className={styles.header}
+        style={
+          event.backgroundType && event.backgroundType !== 'default' && event.backgroundValue
+            ? {
+                background: event.backgroundType === 'image'
+                  ? `url(${event.backgroundValue}) center/cover no-repeat`
+                  : event.backgroundValue,
+                color: 'white',
+                textShadow: '0 1px 4px rgba(0,0,0,0.4)',
+                minHeight: event.backgroundType === 'image' ? '180px' : undefined,
+              }
+            : undefined
+        }
+      >
         <h1 className={styles.title}>{event.title}</h1>
         {event.subtitle && <p className={styles.subtitle}>{event.subtitle}</p>}
       </header>
@@ -170,16 +186,31 @@ export const PublicView: React.FC = () => {
         <div className={styles.cards}>
           {event.mainContent.map(card => {
             const IconComponent = getIconComponent(card.icon) || LuSparkles
+            const hasDetail = !!(card.detailText || card.detailImageUrl)
 
             return (
-              <div key={card.id} className={styles.card}>
+              <div
+                key={card.id}
+                className={`${styles.card} ${card.isHighlight ? styles.cardHighlight : ''}`}
+                onClick={hasDetail ? () => setDetailCard(card) : undefined}
+                style={hasDetail ? { cursor: 'pointer' } : undefined}
+              >
                 <div className={styles.cardIcon}>
-                  <IconComponent size={24} />
+                  {card.imageUrl ? (
+                    <img src={card.imageUrl} alt="" style={{ width: 24, height: 24, borderRadius: 4, objectFit: 'cover' }} />
+                  ) : (
+                    <IconComponent size={24} />
+                  )}
                 </div>
                 <div className={styles.cardContent}>
                   <h3 className={styles.cardTitle}>{card.title}</h3>
                   <p className={styles.cardDescription}>{card.description}</p>
                 </div>
+                {hasDetail && (
+                  <div className={styles.cardArrow}>
+                    <IoChevronForward size={16} />
+                  </div>
+                )}
               </div>
             )
           })}
@@ -370,6 +401,30 @@ export const PublicView: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* Detail Popup */}
+      {detailCard && (
+        <div className={styles.detailOverlay} onClick={() => setDetailCard(null)}>
+          <div className={styles.detailPopup} onClick={e => e.stopPropagation()}>
+            <button className={styles.detailPopupClose} onClick={() => setDetailCard(null)}>
+              <IoMdClose size={22} />
+            </button>
+            {detailCard.detailImageUrl && (
+              <img
+                className={styles.detailPopupImage}
+                src={detailCard.detailImageUrl}
+                alt=""
+              />
+            )}
+            <div className={styles.detailPopupBody}>
+              <h3 className={styles.detailPopupTitle}>{detailCard.title}</h3>
+              {detailCard.detailText && (
+                <p className={styles.detailPopupText}>{detailCard.detailText}</p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Settings Button */}
       <button

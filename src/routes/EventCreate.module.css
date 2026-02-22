@@ -808,6 +808,221 @@
   padding-bottom: 40px;
 }
 
+/* === Background Picker === */
+.bgPreviewBar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bgPreviewSwatch {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: 2px solid var(--ios-separator);
+  flex-shrink: 0;
+}
+
+.bgPickerPanel {
+  background: var(--ios-bg-grouped);
+  border: 1px solid var(--ios-separator);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-top: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.bgPickerGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.bgPickerGroup label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ios-label-secondary);
+}
+
+.bgSwatchGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.bgSwatch {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.bgSwatch:hover {
+  transform: scale(1.1);
+}
+
+.bgSwatchActive {
+  border-color: var(--ios-blue);
+  box-shadow: 0 0 0 2px var(--ios-blue);
+}
+
+/* === Visual Toggle (Icon / Photo) === */
+.visualToggle {
+  display: inline-flex;
+  background: var(--ios-fill-tertiary);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.visualToggleBtn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0.35rem 0.75rem;
+  border: none;
+  background: transparent;
+  color: var(--ios-label-secondary);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.visualToggleActive {
+  background: var(--ios-blue);
+  color: white;
+  border-radius: 6px;
+}
+
+/* === Highlight Toggle === */
+.highlightToggle {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0.3rem 0.6rem;
+  border: 1px solid var(--ios-separator);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ios-label-secondary);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.highlightToggle:hover {
+  border-color: var(--ios-blue);
+}
+
+/* === Image Preview Thumbnail === */
+.imagePreviewSmall {
+  position: relative;
+  display: inline-block;
+  margin-top: 0.5rem;
+}
+
+.imagePreviewSmall img {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid var(--ios-separator);
+}
+
+.imageRemoveBtn {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: none;
+  background: var(--ios-red, #ff3b30);
+  color: white;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* === Detail Accordion === */
+.detailsAccordion {
+  margin-top: 0.5rem;
+  border: 1px solid var(--ios-separator);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.detailsAccordion summary {
+  padding: 0.6rem 0.8rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ios-label-secondary);
+  cursor: pointer;
+  background: var(--ios-fill-tertiary);
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.detailsAccordion summary::-webkit-details-marker {
+  display: none;
+}
+
+.detailsAccordion[open] summary {
+  border-bottom: 1px solid var(--ios-separator);
+}
+
+.detailsAccordion > div {
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* === Preview Card Highlight === */
+.previewCardHighlight {
+  border: 2px solid transparent;
+  background-image:
+    linear-gradient(var(--ios-bg-secondary, #f2f2f7), var(--ios-bg-secondary, #f2f2f7)),
+    linear-gradient(135deg, #97c2ec, #667eea, #764ba2, #f093fb, #97c2ec);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  background-size:
+    100% 100%,
+    300% 300%;
+  animation: previewCardGradientFlow 3s ease infinite;
+}
+
+@keyframes previewCardGradientFlow {
+  0% {
+    background-position: 0 0, 0% 50%;
+  }
+  50% {
+    background-position: 0 0, 100% 50%;
+  }
+  100% {
+    background-position: 0 0, 0% 50%;
+  }
+}
+
+/* === Preview Card Arrow === */
+.previewCardArrow {
+  flex-shrink: 0;
+  color: var(--ios-label-tertiary, #c7c7cc);
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
   .content {

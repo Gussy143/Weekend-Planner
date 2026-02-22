@@ -3,6 +3,10 @@ export interface ContentCard {
   icon: string
   title: string
   description: string
+  imageUrl?: string        // 아이콘 대신 이미지 사용 시
+  detailText?: string      // 상세 팝업 텍스트
+  detailImageUrl?: string  // 상세 팝업 이미지
+  isHighlight?: boolean    // 하이라이트 표시
 }
 
 export interface ScheduleItem {
@@ -47,6 +51,8 @@ export interface Event {
   title: string
   subtitle?: string
   isActive: boolean // 현재 표시할 이벤트인지
+  backgroundType?: 'default' | 'color' | 'gradient' | 'image'
+  backgroundValue?: string
   mainContent: ContentCard[]
   schedules: DaySchedule[]
   location: LocationInfo

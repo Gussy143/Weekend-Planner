@@ -1,7 +1,31 @@
 import { supabase } from '../lib/supabase'
 import type { Event } from '../types/event'
 
+const STORAGE_BUCKET = 'event-images'
+
 export class EventService {
+  /**
+   * 이미지 업로드 (Supabase Storage)
+   */
+  static async uploadImage(file: File, folder: string = 'content'): Promise<string | null> {
+    try {
+      const ext = file.name.split('.').pop() || 'jpg'
+      const fileName = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
+      const { error } = await supabase.storage
+        .from(STORAGE_BUCKET)
+        .upload(fileName, file, { cacheControl: '3600', upsert: false })
+      if (error) {
+        console.error('Upload error:', error)
+        return null
+      }
+      const { data } = supabase.storage.from(STORAGE_BUCKET).getPublicUrl(fileName)
+      return data.publicUrl
+    } catch (error) {
+      console.error('Error uploading image:', error)
+      return null
+    }
+  }
+
   /**
    * 특정 이벤트 ID로 전체 데이터 가져오기
    */
@@ -84,11 +108,17 @@ export class EventService {
         title: event.title,
         subtitle: event.subtitle || undefined,
         isActive: event.is_active,
+        backgroundType: event.background_type || 'default',
+        backgroundValue: event.background_value || undefined,
         mainContent: (mainContent || []).map((c: any) => ({
           id: c.id,
           icon: c.icon,
           title: c.title,
           description: c.description,
+          imageUrl: c.image_url || undefined,
+          detailText: c.detail_text || undefined,
+          detailImageUrl: c.detail_image_url || undefined,
+          isHighlight: c.is_highlight || false,
         })),
         schedules,
         location: location
@@ -99,6 +129,8 @@ export class EventService {
               kakaoMapUrl: location.kakao_map_url || undefined,
               transport,
               note: location.note || undefined,
+              pensionUrl: location.pension_url || undefined,
+              pensionLinkTitle: location.pension_link_title || undefined,
             }
           : {
               name: '',
@@ -215,11 +247,17 @@ export class EventService {
         title: event.title,
         subtitle: event.subtitle || undefined,
         isActive: event.is_active,
+        backgroundType: event.background_type || 'default',
+        backgroundValue: event.background_value || undefined,
         mainContent: mainContent.map((c: any) => ({
           id: c.id,
           icon: c.icon,
           title: c.title,
           description: c.description,
+          imageUrl: c.image_url || undefined,
+          detailText: c.detail_text || undefined,
+          detailImageUrl: c.detail_image_url || undefined,
+          isHighlight: c.is_highlight || false,
         })),
         schedules,
         location: {
@@ -373,6 +411,8 @@ export class EventService {
           title: event.title,
           subtitle: event.subtitle || null,
           is_active: event.isActive ?? false,
+          background_type: event.backgroundType || 'default',
+          background_value: event.backgroundValue || null,
         })
         .select()
         .single()
@@ -424,6 +464,10 @@ export class EventService {
           icon: c.icon,
           title: c.title,
           description: c.description,
+          image_url: c.imageUrl || null,
+          detail_text: c.detailText || null,
+          detail_image_url: c.detailImageUrl || null,
+          is_highlight: c.isHighlight || false,
           display_order: i + 1,
         }))
         const { error: mcError } = await supabase
