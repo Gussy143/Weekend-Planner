@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { IoMdArrowBack, IoMdAdd, IoMdTrash, IoMdEye } from 'react-icons/io'
 import { IoLocationSharp, IoClose, IoImageOutline } from 'react-icons/io5'
-import { MdSave, MdDirectionsBus, MdWallpaper, MdStars } from 'react-icons/md'
+import { MdSave, MdDirectionsBus, MdWallpaper, MdStars, MdDarkMode, MdLightMode } from 'react-icons/md'
 import { useEventStore } from '../store/useEventStore'
 import { EventService } from '../services/eventService'
 import { IconPicker, getIconComponent } from '../components/IconPicker'
@@ -60,6 +60,9 @@ export const EventCreate: React.FC = () => {
   const [backgroundValue, setBackgroundValue] = useState('')
   const [showBgPicker, setShowBgPicker] = useState(false)
   const bgFileRef = useRef<HTMLInputElement>(null)
+
+  // 테마 설정
+  const [defaultTheme, setDefaultTheme] = useState<'light' | 'dark' | 'system'>('system')
 
   // 이미지 업로드 ref
   const imageUploadRefs = useRef<{ [key: string]: HTMLInputElement | null }>({})
@@ -269,6 +272,7 @@ export const EventCreate: React.FC = () => {
       isActive: false,
       backgroundType: backgroundType !== 'default' ? backgroundType : undefined,
       backgroundValue: backgroundValue || undefined,
+      defaultTheme: defaultTheme !== 'system' ? defaultTheme : undefined,
       mainContent: mainContent.filter(
         c => c.title.trim() && c.description.trim()
       ),
@@ -367,7 +371,7 @@ export const EventCreate: React.FC = () => {
             </div>
           </section>
 
-          {/* 배경 설정 */}
+          {/* 배경 & 테마 설정 */}
           <section className={styles.section}>
             <div className={styles.sectionHeader}>
               <h2>배경 설정</h2>
@@ -378,6 +382,31 @@ export const EventCreate: React.FC = () => {
                 <MdWallpaper size={20} />
                 {showBgPicker ? '닫기' : '변경'}
               </button>
+            </div>
+
+            {/* 기본 테마 설정 */}
+            <div className={styles.formGroup}>
+              <label>기본 테마</label>
+              <div className={styles.themeToggle}>
+                <button
+                  className={`${styles.themeToggleBtn} ${defaultTheme === 'light' ? styles.themeToggleActive : ''}`}
+                  onClick={() => setDefaultTheme('light')}
+                >
+                  <MdLightMode size={16} /> 라이트
+                </button>
+                <button
+                  className={`${styles.themeToggleBtn} ${defaultTheme === 'system' ? styles.themeToggleActive : ''}`}
+                  onClick={() => setDefaultTheme('system')}
+                >
+                  시스템
+                </button>
+                <button
+                  className={`${styles.themeToggleBtn} ${defaultTheme === 'dark' ? styles.themeToggleActive : ''}`}
+                  onClick={() => setDefaultTheme('dark')}
+                >
+                  <MdDarkMode size={16} /> 다크
+                </button>
+              </div>
             </div>
             {backgroundType !== 'default' && (
               <div className={styles.bgPreviewBar}>
@@ -1027,7 +1056,8 @@ export const EventCreate: React.FC = () => {
         <div className={styles.preview}>
           <div className={styles.previewSticky}>
             <div className={styles.previewLabel}>미리보기</div>
-            <div className={styles.previewPhone}
+            <div
+              className={styles.previewPhone}
               style={
                 backgroundType !== 'default' && backgroundValue
                   ? {
@@ -1255,7 +1285,8 @@ export const EventCreate: React.FC = () => {
           </button>
         </div>
         <div className={styles.mobilePreviewBody}>
-          <div className={styles.previewPhone}
+          <div
+            className={styles.previewPhone}
             style={
               backgroundType !== 'default' && backgroundValue
                 ? {

@@ -26,7 +26,7 @@ import styles from './PublicView.module.css'
 export const PublicView: React.FC = () => {
   const navigate = useNavigate()
   const { getActiveEvent, seedDemoEvent, events } = useEventStore()
-  const { theme, mode, toggleTheme } = useThemeStore()
+  const { theme, mode, toggleTheme, setMode } = useThemeStore()
   const [event, setEvent] = useState(getActiveEvent())
   const [showMenu, setShowMenu] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -135,6 +135,10 @@ export const PublicView: React.FC = () => {
       if (dbEvent) {
         // DB에 데이터가 있으면 사용
         setEvent(dbEvent)
+        // 이벤트에 기본 테마가 설정되어 있으면 적용
+        if (dbEvent.defaultTheme && dbEvent.defaultTheme !== 'system') {
+          setMode(dbEvent.defaultTheme)
+        }
       } else {
         // DB에 없으면 로컬 스토리지 사용
         if (events.length === 0) {

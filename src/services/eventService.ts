@@ -113,6 +113,7 @@ export class EventService {
         title: event.title,
         subtitle: event.subtitle || undefined,
         isActive: event.is_active,
+        defaultTheme: event.default_theme || 'system',
         backgroundType: event.background_type || 'default',
         backgroundValue: event.background_value || undefined,
         mainContent: (mainContent || []).map((c: any) => ({
@@ -252,6 +253,7 @@ export class EventService {
         title: event.title,
         subtitle: event.subtitle || undefined,
         isActive: event.is_active,
+        defaultTheme: event.default_theme || 'system',
         backgroundType: event.background_type || 'default',
         backgroundValue: event.background_value || undefined,
         mainContent: mainContent.map((c: any) => ({
@@ -416,6 +418,7 @@ export class EventService {
           title: event.title,
           subtitle: event.subtitle || null,
           is_active: event.isActive ?? false,
+          default_theme: event.defaultTheme || 'system',
           background_type: event.backgroundType || 'default',
           background_value: event.backgroundValue || null,
         })

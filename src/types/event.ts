@@ -51,6 +51,7 @@ export interface Event {
   title: string
   subtitle?: string
   isActive: boolean // 현재 표시할 이벤트인지
+  defaultTheme?: 'light' | 'dark' | 'system' // 이벤트 기본 테마
   backgroundType?: 'default' | 'color' | 'gradient' | 'image'
   backgroundValue?: string
   mainContent: ContentCard[]

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { IoMdArrowBack, IoMdAdd, IoMdTrash, IoMdEye } from 'react-icons/io'
 import { IoLocationSharp, IoClose, IoImageOutline } from 'react-icons/io5'
-import { MdSave, MdDirectionsBus, MdWallpaper, MdStars } from 'react-icons/md'
+import { MdSave, MdDirectionsBus, MdWallpaper, MdStars, MdDarkMode, MdLightMode } from 'react-icons/md'
 import { useEventStore } from '../store/useEventStore'
 import { EventService } from '../services/eventService'
 import { IconPicker, getIconComponent } from '../components/IconPicker'
@@ -62,6 +62,9 @@ export const EventEdit: React.FC = () => {
   const [showBgPicker, setShowBgPicker] = useState(false)
   const bgFileRef = useRef<HTMLInputElement>(null)
 
+  // 테마 설정
+  const [defaultTheme, setDefaultTheme] = useState<'light' | 'dark' | 'system'>('system')
+
   // 이미지 업로드 ref
   const imageUploadRefs = useRef<{ [key: string]: HTMLInputElement | null }>({})
   const detailImageRefs = useRef<{ [key: string]: HTMLInputElement | null }>({})
@@ -98,6 +101,16 @@ export const EventEdit: React.FC = () => {
         if (event.backgroundType && event.backgroundType !== 'default') {
           setBackgroundType(event.backgroundType)
           setBackgroundValue(event.backgroundValue || '')
+        }
+
+        // 테마 설정
+        if (event.defaultTheme) {
+          setDefaultTheme(event.defaultTheme)
+        }
+
+        // 테마 설정
+        if (event.defaultTheme) {
+          setDefaultTheme(event.defaultTheme)
         }
 
         if (event.mainContent && event.mainContent.length > 0) {
@@ -352,6 +365,7 @@ export const EventEdit: React.FC = () => {
         backgroundType:
           backgroundType !== 'default' ? backgroundType : undefined,
         backgroundValue: backgroundValue || undefined,
+        defaultTheme: defaultTheme !== 'system' ? defaultTheme : undefined,
         mainContent: mainContent.filter(
           c => c.title.trim() || c.description.trim()
         ),
@@ -479,7 +493,7 @@ export const EventEdit: React.FC = () => {
             </div>
           </section>
 
-          {/* 배경 설정 */}
+          {/* 배경 & 테마 설정 */}
           <section className={styles.section}>
             <div className={styles.sectionHeader}>
               <h2>배경 설정</h2>
@@ -490,6 +504,31 @@ export const EventEdit: React.FC = () => {
                 <MdWallpaper size={20} />
                 {showBgPicker ? '닫기' : '변경'}
               </button>
+            </div>
+
+            {/* 기본 테마 설정 */}
+            <div className={styles.formGroup}>
+              <label>기본 테마</label>
+              <div className={styles.themeToggle}>
+                <button
+                  className={`${styles.themeToggleBtn} ${defaultTheme === 'light' ? styles.themeToggleActive : ''}`}
+                  onClick={() => setDefaultTheme('light')}
+                >
+                  <MdLightMode size={16} /> 라이트
+                </button>
+                <button
+                  className={`${styles.themeToggleBtn} ${defaultTheme === 'system' ? styles.themeToggleActive : ''}`}
+                  onClick={() => setDefaultTheme('system')}
+                >
+                  시스템
+                </button>
+                <button
+                  className={`${styles.themeToggleBtn} ${defaultTheme === 'dark' ? styles.themeToggleActive : ''}`}
+                  onClick={() => setDefaultTheme('dark')}
+                >
+                  <MdDarkMode size={16} /> 다크
+                </button>
+              </div>
             </div>
             {backgroundType !== 'default' && (
               <div className={styles.bgPreviewBar}>
@@ -1134,7 +1173,8 @@ export const EventEdit: React.FC = () => {
         <div className={styles.preview}>
           <div className={styles.previewSticky}>
             <div className={styles.previewLabel}>미리보기</div>
-            <div className={styles.previewPhone}
+            <div
+              className={styles.previewPhone}
               style={
                 backgroundType !== 'default' && backgroundValue
                   ? {
@@ -1362,7 +1402,8 @@ export const EventEdit: React.FC = () => {
           </button>
         </div>
         <div className={styles.mobilePreviewBody}>
-          <div className={styles.previewPhone}
+          <div
+            className={styles.previewPhone}
             style={
               backgroundType !== 'default' && backgroundValue
                 ? {

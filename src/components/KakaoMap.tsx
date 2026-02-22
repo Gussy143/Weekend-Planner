@@ -189,7 +189,14 @@ export const KakaoMap: React.FC<KakaoMapProps> = ({ address, placeName }) => {
       )}
       <div
         ref={mapRef}
-        style={{ width: '100%', height: '240px', borderRadius: '12px' }}
+        style={{
+          width: '100%',
+          height: '240px',
+          borderRadius: '12px',
+          /* 다크모드에서 카카오맵 텍스트 반전 방지 */
+          color: '#333',
+          colorScheme: 'light',
+        }}
       />
     </div>
   );
