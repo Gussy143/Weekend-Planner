@@ -54,7 +54,9 @@ export const EventCreate: React.FC = () => {
   const [showMobilePreview, setShowMobilePreview] = useState(false)
 
   // 배경 설정
-  const [backgroundType, setBackgroundType] = useState<'default' | 'color' | 'gradient' | 'image'>('default')
+  const [backgroundType, setBackgroundType] = useState<
+    'default' | 'color' | 'gradient' | 'image'
+  >('default')
   const [backgroundValue, setBackgroundValue] = useState('')
   const [showBgPicker, setShowBgPicker] = useState(false)
   const bgFileRef = useRef<HTMLInputElement>(null)
@@ -369,7 +371,10 @@ export const EventCreate: React.FC = () => {
           <section className={styles.section}>
             <div className={styles.sectionHeader}>
               <h2>배경 설정</h2>
-              <button onClick={() => setShowBgPicker(!showBgPicker)} className={styles.addBtn}>
+              <button
+                onClick={() => setShowBgPicker(!showBgPicker)}
+                className={styles.addBtn}
+              >
                 <MdWallpaper size={20} />
                 {showBgPicker ? '닫기' : '변경'}
               </button>
@@ -379,15 +384,23 @@ export const EventCreate: React.FC = () => {
                 <div
                   className={styles.bgPreviewSwatch}
                   style={{
-                    background: backgroundType === 'image'
-                      ? `url(${backgroundValue}) center/cover`
-                      : backgroundValue,
+                    background:
+                      backgroundType === 'image'
+                        ? `url(${backgroundValue}) center/cover`
+                        : backgroundValue,
                   }}
                 />
-                <span>{backgroundType === 'image' ? '커스텀 이미지' : backgroundValue}</span>
+                <span>
+                  {backgroundType === 'image'
+                    ? '커스텀 이미지'
+                    : backgroundValue}
+                </span>
                 <button
                   className={styles.deleteSmallBtn}
-                  onClick={() => { setBackgroundType('default'); setBackgroundValue('') }}
+                  onClick={() => {
+                    setBackgroundType('default')
+                    setBackgroundValue('')
+                  }}
                 >
                   <IoMdTrash size={14} />
                 </button>
@@ -399,12 +412,25 @@ export const EventCreate: React.FC = () => {
                 <div className={styles.bgPickerGroup}>
                   <label>단색</label>
                   <div className={styles.bgSwatchGrid}>
-                    {['#f87171', '#fbbf24', '#34d399', '#60a5fa', '#a78bfa', '#f472b6', '#1f1f1f', '#f5f3ef'].map(c => (
+                    {[
+                      '#f87171',
+                      '#fbbf24',
+                      '#34d399',
+                      '#60a5fa',
+                      '#a78bfa',
+                      '#f472b6',
+                      '#1f1f1f',
+                      '#f5f3ef',
+                    ].map(c => (
                       <button
                         key={c}
                         className={`${styles.bgSwatch} ${backgroundType === 'color' && backgroundValue === c ? styles.bgSwatchActive : ''}`}
                         style={{ background: c }}
-                        onClick={() => { setBackgroundType('color'); setBackgroundValue(c); setShowBgPicker(false) }}
+                        onClick={() => {
+                          setBackgroundType('color')
+                          setBackgroundValue(c)
+                          setShowBgPicker(false)
+                        }}
                       />
                     ))}
                   </div>
@@ -427,7 +453,11 @@ export const EventCreate: React.FC = () => {
                         key={g}
                         className={`${styles.bgSwatch} ${backgroundType === 'gradient' && backgroundValue === g ? styles.bgSwatchActive : ''}`}
                         style={{ background: g }}
-                        onClick={() => { setBackgroundType('gradient'); setBackgroundValue(g); setShowBgPicker(false) }}
+                        onClick={() => {
+                          setBackgroundType('gradient')
+                          setBackgroundValue(g)
+                          setShowBgPicker(false)
+                        }}
                       />
                     ))}
                   </div>
@@ -470,13 +500,27 @@ export const EventCreate: React.FC = () => {
               <div key={card.id} className={styles.card}>
                 <div className={styles.cardHeader}>
                   <span>카드 {index + 1}</span>
-                  <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      gap: '0.5rem',
+                      alignItems: 'center',
+                    }}
+                  >
                     <button
-                      onClick={() => updateMainContent(card.id, 'isHighlight', !card.isHighlight)}
+                      onClick={() =>
+                        updateMainContent(
+                          card.id,
+                          'isHighlight',
+                          !card.isHighlight
+                        )
+                      }
                       className={styles.highlightToggle}
                       title="하이라이트"
                       style={{
-                        background: card.isHighlight ? 'linear-gradient(135deg, #97c2ec, #764ba2)' : undefined,
+                        background: card.isHighlight
+                          ? 'linear-gradient(135deg, #97c2ec, #764ba2)'
+                          : undefined,
                         color: card.isHighlight ? 'white' : undefined,
                       }}
                     >
@@ -511,7 +555,9 @@ export const EventCreate: React.FC = () => {
                       사진
                     </button>
                     <input
-                      ref={el => { imageUploadRefs.current[card.id] = el }}
+                      ref={el => {
+                        imageUploadRefs.current[card.id] = el
+                      }}
                       type="file"
                       accept="image/*"
                       style={{ display: 'none' }}
@@ -533,7 +579,9 @@ export const EventCreate: React.FC = () => {
                       <img src={card.imageUrl} alt="카드 이미지" />
                       <button
                         className={styles.imageRemoveBtn}
-                        onClick={() => updateMainContent(card.id, 'imageUrl', '')}
+                        onClick={() =>
+                          updateMainContent(card.id, 'imageUrl', '')
+                        }
                       >
                         <IoClose size={14} />
                       </button>
@@ -571,16 +619,26 @@ export const EventCreate: React.FC = () => {
                   <summary>상세 정보 (클릭 시 팝업에 표시)</summary>
                   <div className={styles.formGroup}>
                     <label>상세 이미지</label>
-                    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        gap: '0.5rem',
+                        alignItems: 'center',
+                      }}
+                    >
                       <button
                         className={styles.addSmallBtn}
-                        onClick={() => detailImageRefs.current[card.id]?.click()}
+                        onClick={() =>
+                          detailImageRefs.current[card.id]?.click()
+                        }
                       >
                         <IoImageOutline size={16} />
                         이미지 업로드
                       </button>
                       <input
-                        ref={el => { detailImageRefs.current[card.id] = el }}
+                        ref={el => {
+                          detailImageRefs.current[card.id] = el
+                        }}
                         type="file"
                         accept="image/*"
                         style={{ display: 'none' }}
@@ -595,7 +653,9 @@ export const EventCreate: React.FC = () => {
                         <img src={card.detailImageUrl} alt="상세 이미지" />
                         <button
                           className={styles.imageRemoveBtn}
-                          onClick={() => updateMainContent(card.id, 'detailImageUrl', '')}
+                          onClick={() =>
+                            updateMainContent(card.id, 'detailImageUrl', '')
+                          }
                         >
                           <IoClose size={14} />
                         </button>
@@ -967,23 +1027,20 @@ export const EventCreate: React.FC = () => {
         <div className={styles.preview}>
           <div className={styles.previewSticky}>
             <div className={styles.previewLabel}>미리보기</div>
-            <div className={styles.previewPhone}>
-              {/* Header */}
-              <div
-                className={styles.previewHeader}
-                style={
-                  backgroundType !== 'default' && backgroundValue
-                    ? {
-                        background: backgroundType === 'image'
+            <div className={styles.previewPhone}
+              style={
+                backgroundType !== 'default' && backgroundValue
+                  ? {
+                      background:
+                        backgroundType === 'image'
                           ? `url(${backgroundValue}) center/cover no-repeat`
                           : backgroundValue,
-                        color: backgroundType !== 'default' ? 'white' : undefined,
-                        textShadow: backgroundType !== 'default' ? '0 1px 4px rgba(0,0,0,0.4)' : undefined,
-                        minHeight: backgroundType === 'image' ? '140px' : undefined,
-                      }
-                    : undefined
-                }
-              >
+                    }
+                  : undefined
+              }
+            >
+              {/* Header */}
+              <div className={styles.previewHeader}>
                 <h1>{title || '이벤트 제목'}</h1>
                 {subtitle && <p>{subtitle}</p>}
               </div>
@@ -995,14 +1052,28 @@ export const EventCreate: React.FC = () => {
                     {mainContent
                       .filter(c => c.title || c.description)
                       .map(card => (
-                        <div key={card.id} className={`${styles.previewCard} ${card.isHighlight ? styles.previewCardHighlight : ''}`}>
+                        <div
+                          key={card.id}
+                          className={`${styles.previewCard} ${card.isHighlight ? styles.previewCardHighlight : ''}`}
+                        >
                           <div className={styles.previewCardIcon}>
                             {card.imageUrl ? (
-                              <img src={card.imageUrl} alt="" style={{ width: 22, height: 22, borderRadius: 4, objectFit: 'cover' }} />
-                            ) : (() => {
-                              const IC = getIconComponent(card.icon)
-                              return IC ? <IC size={22} /> : '❓'
-                            })()}
+                              <img
+                                src={card.imageUrl}
+                                alt=""
+                                style={{
+                                  width: 22,
+                                  height: 22,
+                                  borderRadius: 4,
+                                  objectFit: 'cover',
+                                }}
+                              />
+                            ) : (
+                              (() => {
+                                const IC = getIconComponent(card.icon)
+                                return IC ? <IC size={22} /> : '❓'
+                              })()
+                            )}
                           </div>
                           <div className={styles.previewCardContent}>
                             <h4>{card.title || '제목 없음'}</h4>
@@ -1184,23 +1255,20 @@ export const EventCreate: React.FC = () => {
           </button>
         </div>
         <div className={styles.mobilePreviewBody}>
-          <div className={styles.previewPhone}>
-            {/* Header */}
-            <div
-              className={styles.previewHeader}
-              style={
-                backgroundType !== 'default' && backgroundValue
-                  ? {
-                      background: backgroundType === 'image'
+          <div className={styles.previewPhone}
+            style={
+              backgroundType !== 'default' && backgroundValue
+                ? {
+                    background:
+                      backgroundType === 'image'
                         ? `url(${backgroundValue}) center/cover no-repeat`
                         : backgroundValue,
-                      color: backgroundType !== 'default' ? 'white' : undefined,
-                      textShadow: backgroundType !== 'default' ? '0 1px 4px rgba(0,0,0,0.4)' : undefined,
-                      minHeight: backgroundType === 'image' ? '140px' : undefined,
-                    }
-                  : undefined
-              }
-            >
+                  }
+                : undefined
+            }
+          >
+            {/* Header */}
+            <div className={styles.previewHeader}>
               <h1>{title || '이벤트 제목'}</h1>
               {subtitle && <p>{subtitle}</p>}
             </div>
@@ -1212,14 +1280,28 @@ export const EventCreate: React.FC = () => {
                   {mainContent
                     .filter(c => c.title || c.description)
                     .map(card => (
-                      <div key={card.id} className={`${styles.previewCard} ${card.isHighlight ? styles.previewCardHighlight : ''}`}>
+                      <div
+                        key={card.id}
+                        className={`${styles.previewCard} ${card.isHighlight ? styles.previewCardHighlight : ''}`}
+                      >
                         <div className={styles.previewCardIcon}>
                           {card.imageUrl ? (
-                            <img src={card.imageUrl} alt="" style={{ width: 22, height: 22, borderRadius: 4, objectFit: 'cover' }} />
-                          ) : (() => {
-                            const IC = getIconComponent(card.icon)
-                            return IC ? <IC size={22} /> : '❓'
-                          })()}
+                            <img
+                              src={card.imageUrl}
+                              alt=""
+                              style={{
+                                width: 22,
+                                height: 22,
+                                borderRadius: 4,
+                                objectFit: 'cover',
+                              }}
+                            />
+                          ) : (
+                            (() => {
+                              const IC = getIconComponent(card.icon)
+                              return IC ? <IC size={22} /> : '❓'
+                            })()
+                          )}
                         </div>
                         <div className={styles.previewCardContent}>
                           <h4>{card.title || '제목 없음'}</h4>

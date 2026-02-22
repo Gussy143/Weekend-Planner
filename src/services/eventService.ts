@@ -7,7 +7,10 @@ export class EventService {
   /**
    * 이미지 업로드 (Supabase Storage)
    */
-  static async uploadImage(file: File, folder: string = 'content'): Promise<string | null> {
+  static async uploadImage(
+    file: File,
+    folder: string = 'content'
+  ): Promise<string | null> {
     try {
       const ext = file.name.split('.').pop() || 'jpg'
       const fileName = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
@@ -18,7 +21,9 @@ export class EventService {
         console.error('Upload error:', error)
         return null
       }
-      const { data } = supabase.storage.from(STORAGE_BUCKET).getPublicUrl(fileName)
+      const { data } = supabase.storage
+        .from(STORAGE_BUCKET)
+        .getPublicUrl(fileName)
       return data.publicUrl
     } catch (error) {
       console.error('Error uploading image:', error)

@@ -156,10 +156,7 @@ export const AdminDashboard: React.FC = () => {
                           이 이벤트 공개하기
                         </button>
                       ) : (
-                        <button
-                          className={styles.selectBtn}
-                          disabled
-                        >
+                        <button className={styles.selectBtn} disabled>
                           공개 중
                         </button>
                       )}

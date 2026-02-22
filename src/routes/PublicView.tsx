@@ -159,24 +159,23 @@ export const PublicView: React.FC = () => {
     return <div>Loading...</div>
   }
 
-  return (
-    <div className={styles.container}>
-      {/* Header */}
-      <header
-        className={styles.header}
-        style={
-          event.backgroundType && event.backgroundType !== 'default' && event.backgroundValue
-            ? {
-                background: event.backgroundType === 'image'
-                  ? `url(${event.backgroundValue}) center/cover no-repeat`
-                  : event.backgroundValue,
-                color: 'white',
-                textShadow: '0 1px 4px rgba(0,0,0,0.4)',
-                minHeight: event.backgroundType === 'image' ? '180px' : undefined,
-              }
-            : undefined
+  // 배경 스타일 (전체 페이지)
+  const bgStyle: React.CSSProperties | undefined =
+    event.backgroundType &&
+    event.backgroundType !== 'default' &&
+    event.backgroundValue
+      ? {
+          background:
+            event.backgroundType === 'image'
+              ? `url(${event.backgroundValue}) center/cover no-repeat fixed`
+              : event.backgroundValue,
         }
-      >
+      : undefined
+
+  return (
+    <div className={styles.container} style={bgStyle}>
+      {/* Header */}
+      <header className={styles.header}>
         <h1 className={styles.title}>{event.title}</h1>
         {event.subtitle && <p className={styles.subtitle}>{event.subtitle}</p>}
       </header>
@@ -197,7 +196,16 @@ export const PublicView: React.FC = () => {
               >
                 <div className={styles.cardIcon}>
                   {card.imageUrl ? (
-                    <img src={card.imageUrl} alt="" style={{ width: 24, height: 24, borderRadius: 4, objectFit: 'cover' }} />
+                    <img
+                      src={card.imageUrl}
+                      alt=""
+                      style={{
+                        width: 24,
+                        height: 24,
+                        borderRadius: 4,
+                        objectFit: 'cover',
+                      }}
+                    />
                   ) : (
                     <IconComponent size={24} />
                   )}
@@ -404,22 +412,35 @@ export const PublicView: React.FC = () => {
 
       {/* Detail Popup */}
       {detailCard && (
-        <div className={styles.detailOverlay} onClick={() => setDetailCard(null)}>
-          <div className={styles.detailPopup} onClick={e => e.stopPropagation()}>
-            <button className={styles.detailPopupClose} onClick={() => setDetailCard(null)}>
+        <div
+          className={styles.detailOverlay}
+          onClick={() => setDetailCard(null)}
+        >
+          <div
+            className={styles.detailPopup}
+            onClick={e => e.stopPropagation()}
+          >
+            <button
+              className={styles.detailPopupClose}
+              onClick={() => setDetailCard(null)}
+            >
               <IoMdClose size={22} />
             </button>
-            {detailCard.detailImageUrl && (
-              <img
-                className={styles.detailPopupImage}
-                src={detailCard.detailImageUrl}
-                alt=""
-              />
-            )}
             <div className={styles.detailPopupBody}>
               <h3 className={styles.detailPopupTitle}>{detailCard.title}</h3>
+              <p className={styles.detailPopupDesc}>{detailCard.description}</p>
+              <hr className={styles.detailPopupDivider} />
+              {detailCard.detailImageUrl && (
+                <img
+                  className={styles.detailPopupImage}
+                  src={detailCard.detailImageUrl}
+                  alt=""
+                />
+              )}
               {detailCard.detailText && (
-                <p className={styles.detailPopupText}>{detailCard.detailText}</p>
+                <p className={styles.detailPopupText}>
+                  {detailCard.detailText}
+                </p>
               )}
             </div>
           </div>

@@ -3,10 +3,10 @@ export interface ContentCard {
   icon: string
   title: string
   description: string
-  imageUrl?: string        // 아이콘 대신 이미지 사용 시
-  detailText?: string      // 상세 팝업 텍스트
-  detailImageUrl?: string  // 상세 팝업 이미지
-  isHighlight?: boolean    // 하이라이트 표시
+  imageUrl?: string // 아이콘 대신 이미지 사용 시
+  detailText?: string // 상세 팝업 텍스트
+  detailImageUrl?: string // 상세 팝업 이미지
+  isHighlight?: boolean // 하이라이트 표시
 }
 
 export interface ScheduleItem {

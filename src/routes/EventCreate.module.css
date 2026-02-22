@@ -991,7 +991,10 @@
 .previewCardHighlight {
   border: 2px solid transparent;
   background-image:
-    linear-gradient(var(--ios-bg-secondary, #f2f2f7), var(--ios-bg-secondary, #f2f2f7)),
+    linear-gradient(
+      var(--ios-bg-secondary, #f2f2f7),
+      var(--ios-bg-secondary, #f2f2f7)
+    ),
     linear-gradient(135deg, #97c2ec, #667eea, #764ba2, #f093fb, #97c2ec);
   background-origin: border-box;
   background-clip: padding-box, border-box;
@@ -1003,13 +1006,19 @@
 
 @keyframes previewCardGradientFlow {
   0% {
-    background-position: 0 0, 0% 50%;
+    background-position:
+      0 0,
+      0% 50%;
   }
   50% {
-    background-position: 0 0, 100% 50%;
+    background-position:
+      0 0,
+      100% 50%;
   }
   100% {
-    background-position: 0 0, 0% 50%;
+    background-position:
+      0 0,
+      0% 50%;
   }
 }
 
