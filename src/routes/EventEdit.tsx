@@ -2,7 +2,14 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { IoMdArrowBack, IoMdAdd, IoMdTrash, IoMdEye } from 'react-icons/io'
 import { IoLocationSharp, IoClose, IoImageOutline } from 'react-icons/io5'
-import { MdSave, MdDirectionsBus, MdWallpaper, MdStars, MdDarkMode, MdLightMode } from 'react-icons/md'
+import {
+  MdSave,
+  MdDirectionsBus,
+  MdWallpaper,
+  MdStars,
+  MdDarkMode,
+  MdLightMode,
+} from 'react-icons/md'
 import { useEventStore } from '../store/useEventStore'
 import { EventService } from '../services/eventService'
 import { IconPicker, getIconComponent } from '../components/IconPicker'
@@ -63,7 +70,9 @@ export const EventEdit: React.FC = () => {
   const bgFileRef = useRef<HTMLInputElement>(null)
 
   // 테마 설정
-  const [defaultTheme, setDefaultTheme] = useState<'light' | 'dark' | 'system'>('system')
+  const [defaultTheme, setDefaultTheme] = useState<'light' | 'dark' | 'system'>(
+    'system'
+  )
 
   // 이미지 업로드 ref
   const imageUploadRefs = useRef<{ [key: string]: HTMLInputElement | null }>({})
