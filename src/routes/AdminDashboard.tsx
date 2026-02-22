@@ -131,26 +131,37 @@ export const AdminDashboard: React.FC = () => {
               : events.map(event => (
                   <div
                     key={event.id}
-                    className={`${styles.eventCard} ${event.id === activeEventId ? styles.active : ''}`}
+                    className={`${styles.eventItem} ${event.id === activeEventId ? styles.active : ''}`}
                   >
-                    <div className={styles.eventInfo}>
-                      <h3>{event.title}</h3>
-                      <p>
-                        {event.mainContent.length}개 콘텐츠 ·{' '}
-                        {event.schedules.length}일 일정
-                      </p>
-                    </div>
+                    <h3>{event.title}</h3>
+                    <p>
+                      {event.mainContent.length}개 콘텐츠 ·{' '}
+                      {event.schedules.length}일 일정
+                    </p>
                     <div className={styles.eventActions}>
-                      {event.id !== activeEventId && (
+                      <button
+                        onClick={() =>
+                          navigate(`/admin/event/edit/${event.id}`)
+                        }
+                        className={styles.editBtn}
+                      >
+                        <MdEdit size={16} />
+                        편집
+                      </button>
+                      {event.id !== activeEventId ? (
                         <button
                           onClick={() => setActiveEvent(event.id)}
-                          className={styles.activateBtn}
+                          className={styles.selectBtn}
                         >
-                          공개하기
+                          이 이벤트 공개하기
                         </button>
-                      )}
-                      {event.id === activeEventId && (
-                        <span className={styles.activeBadge}>공개중</span>
+                      ) : (
+                        <button
+                          className={styles.selectBtn}
+                          disabled
+                        >
+                          공개 중
+                        </button>
                       )}
                     </div>
                   </div>

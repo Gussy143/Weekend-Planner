@@ -4,13 +4,19 @@
 }
 
 .header {
-  background: #1f1f1f;
+  background: var(--glass-bg-heavy);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-bottom: 1px solid var(--glass-border);
   padding: max(env(safe-area-inset-top), 1rem) 1.5rem 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  color: var(--ios-label-primary);
+  box-shadow: var(--glass-shadow);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .header h1 {
@@ -29,20 +35,22 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: rgba(151, 194, 236, 0.25);
-  color: white;
-  border: 1px solid rgba(151, 194, 236, 0.4);
+  background: var(--ios-fill-primary);
+  color: var(--ios-blue);
+  border: 1px solid rgba(151, 194, 236, 0.3);
   padding: 0.5rem 1rem;
   border-radius: 12px;
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .homeBtn:hover,
 .logoutBtn:hover {
-  background: rgba(151, 194, 236, 0.4);
+  background: rgba(151, 194, 236, 0.35);
 }
 
 .main {
@@ -52,10 +60,14 @@
 }
 
 .section {
-  background: var(--ios-bg-secondary);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
   border-radius: 16px;
   padding: 1.5rem;
   margin-bottom: 1.5rem;
+  box-shadow: var(--glass-shadow);
 }
 
 .section h2 {
@@ -97,10 +109,17 @@
 }
 
 .stats span {
-  background: white;
+  background: var(--ios-bg-secondary);
   padding: 0.4rem 0.8rem;
   border-radius: 8px;
   font-weight: 500;
+}
+
+.loading {
+  color: var(--ios-label-tertiary);
+  text-align: center;
+  padding: 2rem;
+  font-size: 0.95rem;
 }
 
 .noEvent {
